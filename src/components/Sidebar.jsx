@@ -31,7 +31,7 @@ const Sidebar = ({ categorizedChats, activeChat, setActiveChat }) => {
 					border='1px solid #616161'
 					rounded='2xl'
 					mt={10}
-					onClick={() => navigate("/c/new")}>
+					onClick={() => {console.log("Hello"); navigate("/c/new"), { state: "Hello, I need help!" }}}>
 					<LuPlus style={{ marginRight: "2px" }} />
 					Start New
 				</Button>
@@ -57,7 +57,7 @@ const Sidebar = ({ categorizedChats, activeChat, setActiveChat }) => {
 											w='full'
 											rounded='xl'
 											my={1}
-											onClick={() => setActiveChat(chat.id)}>
+											onClick={() => {setActiveChat(chat.id); navigate(`/c/${chat.id}`)}}>
 											<BsChatSquareText />
 											{chat.name}
 										</Button>

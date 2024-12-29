@@ -15,9 +15,9 @@ import { LuLogOut } from "react-icons/lu";
 import UserProfileModal from "./UserProfileModal";
 
 export default function AuthButtons() {
-	const { isAuthenticated, logout } = useAuth();
+	const { isAuthenticated, logout, profile } = useAuth();
 	const navigate = useNavigate();
-
+	
 	const handleLogout = () => {
 		logout();
 		navigate("/login");
@@ -27,7 +27,7 @@ export default function AuthButtons() {
 		<HStack>
 			{isAuthenticated ? (
 				<>
-					<Avatar name='Linda Blair' src='/avatar.png'>
+					<Avatar name={profile?.first_name + " " + profile?.last_name} src='/avatar.png'>
 						<Float placement='bottom-end' offsetX='2' offsetY='1'>
 							<Circle
 								bg='green.500'
@@ -37,7 +37,7 @@ export default function AuthButtons() {
 							/>
 						</Float>
 					</Avatar>
-					<Text>Linda Blair</Text>
+					<Text>{profile?.first_name + " " + profile?.last_name}</Text>
 					<MenuRoot>
 						<MenuTrigger asChild>
 							<Button variant='plain' size='sm'>

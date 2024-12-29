@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Box,
 	Container,
@@ -20,11 +20,10 @@ import { LuKey, LuMail, LuUser } from "react-icons/lu";
 import { Field } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router";
-import { useAuth } from "@/context/AuthContext";
 import Logo from "@/components/Logo";
+import { apiCallerPost } from "@/api/ApiCaller";
 
 const SignUpPage = () => {
-	const { login } = useAuth();
 	const navigate = useNavigate();
 	const flexDirection = useBreakpointValue({ base: "column", md: "row" });
 	const formWidth = useBreakpointValue({ base: "100%", md: "40%" });
@@ -35,9 +34,62 @@ const SignUpPage = () => {
 	});
 	const logoWidth = useBreakpointValue({ base: "100px", md: "150px" });
 
-	const handleSubmit = () => {
-		login();
-		navigate("/c/new");
+	// Form state
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+		first_name: "",
+		last_name: "",
+	});
+	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+
+	// Handle form input changes
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	// Submit handler
+	const handleSubmit = async () => {
+		setIsLoading(true);
+
+		const { email, password, first_name, last_name } = formData;
+		if (!email || !password || !first_name || !last_name) {
+			setError("Please fill in all the required fields.");
+			return;
+		}
+
+		const body = {
+			"email": email,
+			"password": password,
+			"first_name": first_name,
+			"last_name": last_name,
+		};
+
+		console.log(body);
+		
+		setError("");
+		try {
+			const response = await apiCallerPost("/api/users/register/", body);
+			console.log(response);
+			
+			if (response.status === 201) {
+				alert("Registration successful!");
+				navigate("/login");
+			} else {
+				
+				const error = JSON.stringify(response.response.data);
+				throw new Error(error || "Registration failed");
+			}
+		} catch (err) {
+			setError(err.message || "Something went wrong. Please try again.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -82,19 +134,40 @@ const SignUpPage = () => {
 
 							{/* Form Fields */}
 							<VStack gapY={4} align='stretch'>
-								<Field label='Your fullname' required>
+								<Field label='Your first name' required>
 									<InputGroup
 										flex='1'
 										startElement={<LuUser />}
 										w='full'
 										size='lg'>
 										<Input
+											name='first_name'
 											type='text'
-											placeholder='Enter your name'
+											placeholder='Enter your first name'
 											size='lg'
 											variant='filled'
 											bg='secondary.50'
 											border='1px solid #8692A6'
+											onChange={handleChange}
+										/>
+									</InputGroup>
+								</Field>
+
+								<Field label='Last Name' required>
+									<InputGroup
+										flex='1'
+										startElement={<LuUser />}
+										w='full'
+										size='lg'>
+										<Input
+											name='last_name'
+											type='text'
+											placeholder='Enter your last name'
+											size='lg'
+											variant='filled'
+											bg='secondary.50'
+											border='1px solid #8692A6'
+											onChange={handleChange}
 										/>
 									</InputGroup>
 								</Field>
@@ -106,12 +179,14 @@ const SignUpPage = () => {
 										w='full'
 										size='lg'>
 										<Input
+											name='email'
 											type='email'
 											placeholder='Enter your email'
 											size='lg'
 											variant='filled'
 											bg='secondary.50'
 											border='1px solid #8692A6'
+											onChange={handleChange}
 										/>
 									</InputGroup>
 								</Field>
@@ -123,11 +198,13 @@ const SignUpPage = () => {
 										w='full'
 										size='lg'>
 										<PasswordInput
+											name='password'
 											placeholder='Password'
 											size='lg'
 											variant='filled'
 											bg='secondary.50'
 											border='1px solid #8692A6'
+											onChange={handleChange}
 										/>
 									</InputGroup>
 								</Field>
@@ -142,6 +219,13 @@ const SignUpPage = () => {
 									I agree to terms & conditions
 								</Checkbox>
 
+								{/* Error Message */}
+								{error && (
+									<Text color='red.500' fontSize='sm' textAlign='center'>
+										{error}
+									</Text>
+								)}
+
 								{/* Register Button */}
 								<Button
 									w='full'
@@ -151,40 +235,10 @@ const SignUpPage = () => {
 									_hover={{ bg: "teal.600" }}
 									rounded='2xl'
 									mt={2}
+									isLoading={isLoading}
 									onClick={handleSubmit}>
 									Register Account
 								</Button>
-
-								{/* Separator */}
-								<HStack gapX={6} align='center' w='full'>
-									<Separator borderColor='#8692A6' />
-									<Text
-										color='gray.400'
-										fontSize={{ base: "xs", md: "sm" }}
-										flexShrink='0'>
-										Or
-									</Text>
-									<Separator borderColor='#8692A6' />
-								</HStack>
-
-								{/* Google Register Button */}
-								<Button
-									w='full'
-									size='lg'
-									bg='black'
-									color='white'
-									_hover={{ bg: "blackAlpha.700" }}
-									rounded='2xl'>
-									<FaGoogle style={{ marginRight: "8px" }} />
-									Register with Google
-								</Button>
-
-								<Text fontSize='sm' textAlign='center' color='gray.400'>
-									Already have an account?{" "}
-									<Text as='span' color='purple.600'>
-										<Link to='/login'>Sign in</Link>
-									</Text>
-								</Text>
 							</VStack>
 						</VStack>
 					</VStack>

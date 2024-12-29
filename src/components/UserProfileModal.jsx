@@ -16,7 +16,7 @@ import TokensBox from "./TokensBox";
 import { Link, useNavigate } from "react-router";
 
 const UserProfileModal = () => {
-	const { logout } = useAuth();
+	const { logout, profile } = useAuth();
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
@@ -59,7 +59,7 @@ const UserProfileModal = () => {
 									fontWeight='semibold'
 									mb={4}
 									textShadow='1px 1px 16px #FFFFFFa1'>
-									Linda Blair
+									{profile?.first_name + " " + profile?.last_name}
 								</Text>
 
 								<Text color='whiteAlpha.700' fontSize='xs' fontWeight='bold'>
@@ -72,7 +72,7 @@ const UserProfileModal = () => {
 											Username:
 										</Text>
 										<Text color='white' fontSize='xs'>
-											Linda Blair
+											{profile?.first_name + " " + profile?.last_name}
 										</Text>
 									</HStack>
 
@@ -81,7 +81,7 @@ const UserProfileModal = () => {
 											Email:
 										</Text>
 										<Text color='white' fontSize='xs'>
-											abc@gmail.com
+											{profile?.email}
 										</Text>
 									</HStack>
 
@@ -90,7 +90,7 @@ const UserProfileModal = () => {
 											Subscription Plan:
 										</Text>
 										<Text color='white' fontSize='xs'>
-											Freemium Plan
+											{profile?.is_premium ? "Premium" : "Free"} 
 										</Text>
 									</HStack>
 								</VStack>
@@ -111,7 +111,8 @@ const UserProfileModal = () => {
 					<Box p={6} border='1px solid white' borderLeft={0} borderRight={0}>
 						<HStack mb={4} gap={10}>
 							<TokensBox />
-							<VStack gap={2} px={2} w='100%'>
+							{!profile?.is_premium && (
+								<VStack gap={2} px={2} w='100%'>
 								<Text color='whiteAlpha' fontSize='lg'>
 									Limit Exceeded?
 								</Text>
@@ -126,6 +127,8 @@ const UserProfileModal = () => {
 									</Button>
 								</Link>
 							</VStack>
+							)}
+							
 						</HStack>
 					</Box>
 

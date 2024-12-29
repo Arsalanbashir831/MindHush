@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Box,
 	VStack,
 	HStack,
 	Flex,
 	IconButton,
+	Spinner,
 	useBreakpointValue,
+	Text,
 } from "@chakra-ui/react";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import AuthButtons from "@/components/AuthButtons";
@@ -19,38 +21,68 @@ import {
 } from "@/components/ui/drawer";
 import NewChatArea from "@/components/NewChatArea";
 import ChattingArea from "@/components/ChattingArea";
+import { apiCallerAuthGet, apiCallerGet } from "@/api/ApiCaller";
+import { useAuth } from "@/context/AuthContext";
 
 const Dashboard = ({ isNewChart = false }) => {
-	const [activeChat, setActiveChat] = useState(1);
+	const { token, isAuthenticated, logout } = useAuth();
+	
+	const [activeChat, setActiveChat] = useState(null);
+	const [chats, setChats] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-	// Determine if the sidebar should be a drawer (on small screens)
 	const isDrawer = useBreakpointValue({ base: true, md: false });
 
-	// Sample chat data
-	const chatData = [
-		{ id: 1, name: "Ai Chat", date: new Date() },
-		{ id: 2, name: "Chat 1", date: new Date() },
-		{ id: 5, name: "Chat 4", date: new Date(Date.now() - 86400000) }, // Yesterday
-		{ id: 6, name: "Chat 5", date: new Date(Date.now() - 3 * 86400000) }, // 3 days ago
-		{ id: 7, name: "Chat 6", date: new Date(Date.now() - 10 * 86400000) }, // 10 days ago
-	];
+	useEffect(() => {
+		const fetchChats = async () => {
+			if (!token) {
+				setError("Authorization token is missing.");
+				setIsLoading(false);
+				return;
+			}
 
-	// Helper function to categorize chats by date
+			setIsLoading(true);
+			setError(null);
+
+			try {
+				console.log("token", token);
+				const response = await apiCallerAuthGet("/api/chats/user/", token);
+				console.log(response)
+				if (response?.status === 200) {
+					setChats(response.data);
+					if (response.data.length > 0) {
+						setActiveChat(response.data[0].id);
+					}
+				} else {
+					throw new Error(JSON.stringify(response.data.messages) || "Failed to fetch chats.");
+				}
+			} catch (err) {
+				setError(err.message || "An error occurred while fetching chats.");
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchChats();
+	}, [token]);
+
 	const categorizeChats = (chats) => {
 		const today = new Date();
 		const yesterday = new Date(today);
 		yesterday.setDate(today.getDate() - 1);
 
 		const categories = {
-			Today: [],
-			Yesterday: [],
+			"Today": [],
+			"Yesterday": [],
 			"Previous 7 Days": [],
 			"Previous 30 Days": [],
+			"older": [],
 		};
 
 		chats.forEach((chat) => {
-			const chatDate = new Date(chat.date);
-			if (chatDate.toDateString() === today.toDateString()) {
+			const chatDate = new Date(chat.created_at);
+			if (chatDate === today) {
 				categories.Today.push(chat);
 			} else if (chatDate.toDateString() === yesterday.toDateString()) {
 				categories.Yesterday.push(chat);
@@ -58,18 +90,20 @@ const Dashboard = ({ isNewChart = false }) => {
 				categories["Previous 7 Days"].push(chat);
 			} else if (chatDate > new Date(today.setDate(today.getDate() - 30))) {
 				categories["Previous 30 Days"].push(chat);
+			} else {
+				categories.older.push(chat);
 			}
+
 		});
 
 		return categories;
 	};
 
-	const categorizedChats = categorizeChats(chatData);
+	const categorizedChats = categorizeChats(chats);
 
 	return (
 		<Box minH='100vh' color='white'>
 			<HStack w='full' spacing={0}>
-				{/* Sidebar or Drawer */}
 				{!isDrawer && (
 					<Sidebar
 						categorizedChats={categorizedChats}
@@ -78,9 +112,7 @@ const Dashboard = ({ isNewChart = false }) => {
 					/>
 				)}
 
-				{/* Main Content */}
 				<VStack w='full' minH='100vh' gap={8} p={4}>
-					{/* Header */}
 					<Flex
 						justifyContent={{ base: "space-between", md: "flex-end" }}
 						w='full'>
@@ -113,8 +145,17 @@ const Dashboard = ({ isNewChart = false }) => {
 						<AuthButtons />
 					</Flex>
 
-					{/* Chat Area */}
-					{isNewChart ? <NewChatArea isDrawer={isDrawer} /> : <ChattingArea />}
+					{isLoading ? (
+						<Spinner size='lg' color='white' />
+					) : error ? (
+						<Text color='red.500' fontSize='lg'>
+							{error}
+						</Text>
+					) : isNewChart ? (
+						<NewChatArea isDrawer={isDrawer} />
+					) : (
+						<ChattingArea chatId={activeChat} />
+					)}
 				</VStack>
 			</HStack>
 		</Box>
