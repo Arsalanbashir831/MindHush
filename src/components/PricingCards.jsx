@@ -2,53 +2,61 @@ import React, { useEffect } from "react";
 import { Box, Button, HStack, Text, VStack, Flex } from "@chakra-ui/react";
 import { apiCallerAuthPost } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router";
 
 const PriceCard = ({ title, price, description, isPopular, originalPrice, planId, isSelected }) => {
     const { profile, isAuthenticated, token, updateProfile } = useAuth();
+const navigation = useNavigate()
+
+   console.log(profile?.is_premium);
+   
 	useEffect(() => {
 		updateProfile(token);
 	}, [])
     // Function to handle subscription initiation
     const handleSubscribe = async () => {
-        if (!token) {
-            alert("You need to be logged in to subscribe.");
-            return;
+        if (!isAuthenticated) {
+            navigation('/login')
         }
+else{
 
-        try {
-            // Call the create checkout session API
-            const response = await apiCallerAuthPost("/api/billing/create-checkout-session/", {}, token);
+    try {
+        // Call the create checkout session API
+        const response = await apiCallerAuthPost("/api/billing/create-checkout-session/", {}, token);
 
-            if (response.status === 200 && response.data?.url) {
-                // Redirect to Stripe's checkout page
-                window.location.href = response.data.url;
-            } else {
-                alert("Failed to initiate the subscription. Please try again.");
-            }
-        } catch (error) {
-            alert("An error occurred while trying to subscribe. Please try again.");
+        if (response.status === 200 && response.data?.url) {
+            // Redirect to Stripe's checkout page
+            window.location.href = response.data.url;
+        } else {
+            alert("Failed to initiate the subscription. Please try again.");
         }
+    } catch (error) {
+        alert("An error occurred while trying to subscribe. Please try again.");
+    }
+}
     };
 
     // Function to handle subscription cancellation
     const handleCancelSubscription = async () => {
-        if (!token) {
-            alert("You need to be logged in to cancel the subscription.");
-            return;
-        }
-
-        try {
-            // Call the cancel subscription API
-            const response = await apiCallerAuthPost("/api/billing/cancel-subscription/", {}, token);
-
-            if (response.status === 200) {
-                alert("Your subscription has been successfully cancelled.");
-            } else {
-                alert("Failed to cancel the subscription. Please try again.");
+        if (!isAuthenticated) {
+            navigation('/login')
+        }else{
+            try {
+                // Call the cancel subscription API
+                const response = await apiCallerAuthPost("/api/billing/cancel-subscription/", {}, token);
+    
+                if (response.status === 200) {
+                    alert("Your subscription has been successfully cancelled.");
+                } else {
+                    alert("Failed to cancel the subscription. Please try again.");
+                }
+            } catch (error) {
+                alert("An error occurred while trying to cancel the subscription. Please try again.");
             }
-        } catch (error) {
-            alert("An error occurred while trying to cancel the subscription. Please try again.");
+
         }
+
+       
     };
 
     return (
@@ -114,22 +122,28 @@ const PriceCard = ({ title, price, description, isPopular, originalPrice, planId
                 <Text fontSize={{ base: "sm", md: "md" }} color="gray.400">
                     per month, paid {price === "0.00" ? "nothing" : "monthly"}
                 </Text>
-                <Button
+                {isPopular &&(<>
+
+                    <Button
                     bg={isSelected ? "#4A4A4A" : isPopular ? "#61395BD1" : "secondary.30"}
                     color="white"
                     size="lg"
                     rounded="full"
                     my={2}
-                    onClick={isSelected ? null : price === "0.00" ? handleCancelSubscription : handleSubscribe}
+                    onClick={profile?.is_premium? handleCancelSubscription : handleSubscribe}
                     isDisabled={isSelected}
                     _hover={!isSelected && { bg: isPopular ? "#7A50764D" : "secondary.50" }}
                 >
-                    {isSelected
+                    {/* {isSelected
                         ? "Current Plan"
                         : price === "0.00"
                         ? "Cancel Subscription"
-                        : "Subscribe"}
+                        : "Subscribe"} */}
+                        {profile?.is_premium ?'Cancel Subscription':'Subscribe'}
                 </Button>
+
+                </>)}
+               
                 <Text fontSize={{ base: "xs", md: "sm" }} color="gray.400">
                     {description}
                 </Text>

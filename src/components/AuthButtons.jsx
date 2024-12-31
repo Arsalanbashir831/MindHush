@@ -27,7 +27,7 @@ export default function AuthButtons() {
 		<HStack>
 			{isAuthenticated ? (
 				<>
-					<Avatar name={profile?.first_name + " " + profile?.last_name} src='/avatar.png'>
+					<Avatar name={profile?.first_name + " " + profile?.last_name} src='/user_avatar.png'>
 						<Float placement='bottom-end' offsetX='2' offsetY='1'>
 							<Circle
 								bg='green.500'

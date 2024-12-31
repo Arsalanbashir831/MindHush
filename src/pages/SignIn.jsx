@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
 	Box,
 	Button,
@@ -12,6 +12,7 @@ import {
 	VStack,
 	useBreakpointValue,
 	HStack,
+	Spinner,
 } from "@chakra-ui/react";
 import { apiCallerAuthGet, setAuthToken } from "@/api/ApiCaller";
 
@@ -27,7 +28,7 @@ import { apiCallerPost } from "@/api/ApiCaller";
 const SignInPage = () => {
 
 	const navigate = useNavigate();
-	const { login, profile, setProfileData } = useAuth();
+	const { login,  setProfileData } = useAuth();
 
 	const flexDirection = useBreakpointValue({ base: "column", md: "row" });
 	const formWidth = useBreakpointValue({ base: "100%", md: "40%" });
@@ -87,6 +88,10 @@ const SignInPage = () => {
 			<Box alignSelf='flex-start' w={logoWidth} mx={10} mt={4} mb={0}>
 				<Logo />
 			</Box>
+			{/* Sign In Button */}
+			{isLoading ? <> <Flex justify={'center'} height={'100vh'} alignItems={'center'}>
+									<Spinner size={'xl'}/>
+								</Flex>  </>:<>
 			<Flex
 				h='full'
 				direction={flexDirection}
@@ -195,22 +200,23 @@ const SignInPage = () => {
 									</Text>
 								)}
 
-								{/* Sign In Button */}
-								<Button
+								
+									<Button
 									w='full'
 									size='lg'
 									color='white'
-									rounded='xl'
 									border='none'
 									bg='linear-gradient(to right, #7B2C97, #008080)'
 									_hover={{
 										opacity: 0.9,
 									}}
 									mt={2}
-									isLoading={isLoading}
 									onClick={handleSubmit}>
 									Sign in
 								</Button>
+							
+								
+								<Text onClick={()=>{navigate('/forget-password')}} cursor={'pointer'} textAlign={'right'} color={'purple.600'}>Forget Password</Text>
 
 								{/* Separator */}
 								<Separator my={4} borderColor='secondary.30' />
@@ -228,7 +234,7 @@ const SignInPage = () => {
 										<FaGoogle style={{ marginRight: "8px" }} />
 										Google
 									</Button>
-									<Button
+									{/* <Button
 										variant='outline'
 										size='lg'
 										bg='gray.800'
@@ -236,7 +242,7 @@ const SignInPage = () => {
 										flex='1'>
 										<FaFacebook style={{ marginRight: "8px" }} />
 										Facebook
-									</Button>
+									</Button> */}
 								</HStack>
 
 								{/* Terms and Conditions */}
@@ -251,6 +257,8 @@ const SignInPage = () => {
 					</VStack>
 				</Box>
 			</Flex>
+			</>}
+								
 		</Container>
 	);
 };

@@ -9,8 +9,9 @@ import TokensBox from "./TokensBox";
 import Logo from "./Logo";
 
 const Sidebar = ({ categorizedChats, activeChat, setActiveChat }) => {
-	const { isAuthenticated } = useAuth();
 	const navigate = useNavigate();
+
+	console.log(categorizedChats)
 	return (
 		<Box
 			alignSelf='flex-start'
@@ -38,9 +39,9 @@ const Sidebar = ({ categorizedChats, activeChat, setActiveChat }) => {
 			</VStack>
 
 			{/* Chat List Section */}
-			{isAuthenticated && (
+		
 				<VStack align='stretch' overflowY='auto' flex='1' spacing={0} mt={4}>
-					{Object.entries(categorizedChats).map(
+					{Object?.entries(categorizedChats).map(
 						([category, chats]) =>
 							chats.length > 0 && (
 								<Box key={category}>
@@ -66,11 +67,11 @@ const Sidebar = ({ categorizedChats, activeChat, setActiveChat }) => {
 							)
 					)}
 				</VStack>
-			)}
+			
 
 			{/* Footer Section */}
 			<Box mt='auto'>
-				{isAuthenticated && <TokensBox />}
+				<TokensBox />
 
 				<VStack gap={2} px={2}>
 					<HStack alignSelf='flex-start'>

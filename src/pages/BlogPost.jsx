@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Heading,
@@ -14,11 +14,34 @@ import {
 import { FaCaretLeft } from "react-icons/fa";
 import { InputGroup } from "@/components/ui/input-group";
 import { LuSearch } from "react-icons/lu";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { apiCallerGet, BASE_URL } from "@/api/ApiCaller";
 
 const BlogPost = () => {
+	const [blog, setBlog] = useState(null)
 	const navigate = useNavigate();
-
+	const { id } = useParams(); // Get the blogId from the URL
+	
+	// console.log(id);
+	function formatDate(dateString) {
+		const date = new Date(dateString); // Parse the date string
+		const day = String(date.getDate()).padStart(2, '0'); // Get day with leading zero
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Get month with leading zero
+		const year = date.getFullYear(); // Get year
+		return `${day}-${month}-${year}`; // Format as dd-mm-year
+	}
+	
+	useEffect(()=>{
+		const fetchBlog = async()=>{
+			await apiCallerGet(`/api/blogs/${id}`).then((data)=>{
+				console.log(data.data);
+				
+				setBlog(data.data)
+			}).catch((e)=>{console.log(e);
+			})
+		}
+		fetchBlog()
+	},[])
 	return (
 		<Box bg='#09090C' color='white' minH='100vh' h='100vh' overflowY='auto'>
 			{/* Main Container */}
@@ -40,10 +63,7 @@ const BlogPost = () => {
 						onClick={() => navigate("/")}>
 						<FaCaretLeft />
 					</IconButton>
-					{/* Search Bar */}
-					<InputGroup maxW='xs' startElement={<LuSearch size={16} />}>
-						<Input placeholder='Search' size='md' rounded='full' />
-					</InputGroup>
+					
 				</Flex>
 
 				{/* Blog Content */}
@@ -51,10 +71,10 @@ const BlogPost = () => {
 					{/* Blog Header */}
 					<Box>
 						<Text fontSize='sm' textAlign='center' opacity={0.7} mb={1}>
-							Blog - 1 • July 2, 2021
+							Blog - {blog?.id} •  {formatDate(blog?.uploaded_at) }
 						</Text>
 						<Heading size='lg' fontWeight='bold' textAlign='center' mb={2}>
-							BLOG - 1
+							{blog?.title}
 						</Heading>
 						<HStack align='center' justify='center' gap={4} mt={10}>
 							<Image
@@ -66,11 +86,9 @@ const BlogPost = () => {
 							/>
 							<VStack align='start' spacing={0}>
 								<Text fontWeight='bold' fontSize='md'>
-									Leslie Alexander
+									ADMIN
 								</Text>
-								<Text fontSize='sm' opacity={0.7}>
-									UI Designer
-								</Text>
+								
 							</VStack>
 						</HStack>
 					</Box>
@@ -78,7 +96,7 @@ const BlogPost = () => {
 					{/* Blog Image */}
 					<Box w='full' mt={2} mb={10}>
 						<Image
-							src='/placeholder-blog-post.png'
+							src={BASE_URL+"/"+blog?.image}
 							alt='Blog Content'
 							borderRadius='md'
 							objectFit='cover'
@@ -88,15 +106,7 @@ const BlogPost = () => {
 
 					{/* Blog Content Text */}
 					<Text lineHeight='tall' fontSize='md' color='gray.300'>
-						ut I must explain to you how all this mistaken idea of denouncing
-						pleasure and praising pain was bo The European languages are members
-						of the same family. Their separate existence is a myth. For scien
-						Far far away, behind the word mountains, far from the countries
-						Vokalia and Consonantia, there live A wonderful serenity has taken
-						possession of my entire soul, like these sweet mornings of spring
-						whi One morning, when Gregor Samsa woke from troubled dreams, he
-						found himself transformed in his bed in I must explain to you how
-						all this mistaken idea of denouncing pleasure and praising pain
+						{blog?.content}
 					</Text>
 				</VStack>
 

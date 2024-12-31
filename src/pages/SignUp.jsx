@@ -79,7 +79,15 @@ const SignUpPage = () => {
 			
 			if (response.status === 201) {
 				alert("Registration successful!");
-				navigate("/login");
+				await apiCallerPost('/api/users/resend-otp/',{
+					email:email
+				}).then(()=>{
+					navigate(`/otp-verification?isNew=true&email=${email}`);
+				}).catch((err)=>{
+					console.log(err);
+					
+				})
+			
 			} else {
 				
 				const error = JSON.stringify(response.response.data);

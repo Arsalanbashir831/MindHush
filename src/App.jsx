@@ -6,6 +6,9 @@ import PricingPlans from "./pages/PricingPlans";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
 import BlogPost from "./pages/BlogPost";
+import ForgetPassword from "./pages/ForgetPassword";
+import OtpVerification from "./pages/OtpVerification";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
 	return (
@@ -14,6 +17,9 @@ const App = () => {
 			<Box as='main' flex='1' overflow='hidden'>
 				<Routes>
 					<Route path='/' element={<LandingPage />} />
+					<Route path='/forget-password' element={<ForgetPassword />} />
+					<Route path='/otp-verification' element={<OtpVerification />} />
+					<Route path='/reset-password' element={<ResetPassword />} />
 					<Route path='/c/new' element={<Dashboard isNewChart={true} />} />
 					<Route path='/c/:id' element={<Dashboard />} />
 					<Route path='/login' element={<SignInPage />} />

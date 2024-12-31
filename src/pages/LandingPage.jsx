@@ -24,8 +24,13 @@ import FeaturesSection from "@/components/FeaturesSection";
 import Logo from "@/components/Logo";
 import { useNavigate } from "react-router";
 import { BiLogoTiktok } from "react-icons/bi";
+import { useAuth } from "@/context/AuthContext";
 
 const LandingPage = () => {
+   const {isAuthenticated} = useAuth()
+
+  //  console.log(isAuthenticated);
+   
   const navigate = useNavigate();
   return (
     <Box
@@ -150,7 +155,7 @@ const LandingPage = () => {
                 color="white"
                 rounded="full"
                 _hover={{ bg: "teal.500" }}
-                onClick={() => navigate("/login")}
+                onClick={() => navigate( isAuthenticated?'/c/new' : "/login")}
               >
                 Get Started
               </Button>

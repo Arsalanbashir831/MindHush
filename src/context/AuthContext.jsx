@@ -1,5 +1,6 @@
 import { apiCallerAuthGet } from "@/api/ApiCaller";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import  { createContext, useContext, useState, useEffect } from "react";
+
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -40,12 +41,12 @@ export const AuthProvider = ({ children }) => {
 		localStorage.setItem("profile", JSON.stringify(profile));
 	}
 
-	const getProfileData = () => {
-		const storedProfile = localStorage.getItem("profile");
-		if (storedProfile) {
-			setProfile(JSON.parse(storedProfile));
-		}
-	}
+	// const getProfileData = () => {
+	// 	const storedProfile = localStorage.getItem("profile");
+	// 	if (storedProfile) {
+	// 		setProfile(JSON.parse(storedProfile));
+	// 	}
+	// }
 
 	const updateProfile = (token) => {
 		apiCallerAuthGet("/api/users/profile", token).then((res) => {
@@ -60,7 +61,8 @@ export const AuthProvider = ({ children }) => {
 	const logout = () => {
 		setToken(null);
 		setIsAuthenticated(false);
-		localStorage.removeItem("authToken"); // Clear token
+		localStorage.removeItem("authToken"); 
+		localStorage.removeItem("profile"); 
 	};
 
 	return (

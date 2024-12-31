@@ -46,11 +46,11 @@ const UserProfileModal = () => {
 							<Box
 								borderRadius='full'
 								border='2px solid'
-								borderColor='white'
+								borderColor='transparent'
 								overflow='hidden'
 								w='150px'
 								h='150px'>
-								<Image src='/avatar.png' alt='Profile' w='full' />
+								<Image src='/user_avatar.png' alt='Profile' w='full' />
 							</Box>
 							<VStack alignItems='flex-start'>
 								<Text
