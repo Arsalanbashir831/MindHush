@@ -12,7 +12,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-	width: 0px;
+	width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -22,4 +22,23 @@ body {
 ::-webkit-scrollbar-thumb {
 	background: #282a2f;
 	border-radius: 24px;
+}
+
+
+/* Dark Modal Styling */
+.dark-modal .ant-modal-content {
+    background-color: #1E1E1E !important; /* Dark background */
+    color: white !important; /* White text */
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+/* Title Color */
+.dark-modal .ant-modal-title {
+    color: white !important;
+}
+
+/* Footer (Buttons) Styling */
+.dark-modal .ant-modal-footer {
+    border-top: 1px solid #333 !important;
 }

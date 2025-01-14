@@ -7,6 +7,10 @@ export default function TokensBox() {
 	const { profile } = useAuth();
 	console.log(profile);
 	return (
+		<>
+
+	
+		{!profile?.is_premium && (
 		<VStack
 			w='full'
 			p={3}
@@ -21,14 +25,14 @@ export default function TokensBox() {
 					</Text>
 					<Text fontSize='xs'>Tokens Used</Text>
 				</HStack>
-				{!profile?.is_premium && (
+			
 					<HStack>
 					<Text fontSize='xs' fontWeight='bold'>
 						{profile?.daily_limit - profile?.credits_used_today > 0 ? profile?.daily_limit - profile?.credits_used_today : 0}
 					</Text>
 					<Text fontSize='xs'>Tokens Left</Text>
 				</HStack>
-				)}
+			
 				
 			</VStack>
 			
@@ -41,10 +45,13 @@ export default function TokensBox() {
 				w='100%'>
 				<HStack>
 					<ProgressValueText>{(profile?.credits_used_today / profile?.daily_limit) * 100 < 100 ? (profile?.credits_used_today / profile?.daily_limit) * 100 : 100}%</ProgressValueText>
-					<ProgressBar flex='1' rounded='full'  />
+					<ProgressBar   rounded='full'  />
 				</HStack>
 			</ProgressRoot>
 			)}
 		</VStack>
+			)}
+			</>
 	);
+	
 }

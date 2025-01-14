@@ -25,7 +25,7 @@ const BlogCard = ({ image, title, number }) => {
 			cursor="pointer"
 			transition="transform 0.2s"
 			_hover={{ transform: "scale(1.02)" }}
-			onClick={() => navigate(`/blogs/${number}`)}
+			onClick={() => navigate(`/blogs/${number}?${title}`)}
 		>
 			<Image
 				src={`${BASE_URL+`/`+image}`}
@@ -98,6 +98,7 @@ const BlogsSection = () => {
 					BLOGS
 				</Heading>
 				<IconButton
+				px={5}
 					aria-label="View all blogs"
 					variant="ghost"
 					colorScheme="whiteAlpha"
@@ -106,6 +107,7 @@ const BlogsSection = () => {
 					transition="transform 0.2s"
 					onClick={() => navigate("/blogs")} // Assuming "/blogs" is the route for all blogs
 				>
+				MORE
 					<Image src="/icons/arrow_right_icon.svg" alt="Arrow right" w={10} />
 				</IconButton>
 			</Flex>

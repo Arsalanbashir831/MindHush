@@ -36,11 +36,31 @@ const apiCallerAuthGet = async (url, token) =>{
 
         })
     );
-
-
+    
 }
    
-    
+const apiCallerPut = async (url, body) =>
+    handleRequest(() => axios.put(url, { ...body }));
+
+// Authenticated PUT request
+const apiCallerAuthPut = async (url, body, token) =>
+    handleRequest(() =>
+        axios.put(url, { ...body }, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+    );
+
+// Generic DELETE request
+const apiCallerDelete = async (url) =>
+    handleRequest(() => axios.delete(url));
+
+// Authenticated DELETE request
+const apiCallerAuthDelete = async (url, token) =>
+    handleRequest(() =>
+        axios.delete(url, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+    );
 
 // Authenticated POST request
 const apiCallerAuthPost = async (url, body, token) =>{
@@ -63,4 +83,14 @@ const setAuthToken = (token) => {
     }
 };
 
-export { apiCallerPost, apiCallerGet, apiCallerAuthGet, apiCallerAuthPost, setAuthToken };
+export {
+    apiCallerPost,
+    apiCallerGet,
+    apiCallerAuthGet,
+    apiCallerAuthPost,
+    apiCallerPut,
+    apiCallerAuthPut,
+    apiCallerDelete,
+    apiCallerAuthDelete,
+    setAuthToken
+};

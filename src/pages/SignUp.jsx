@@ -3,11 +3,9 @@ import {
 	Box,
 	Container,
 	Flex,
-	HStack,
 	Heading,
 	Image,
 	Input,
-	Separator,
 	Text,
 	VStack,
 	useBreakpointValue,
@@ -15,11 +13,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
 import { PasswordInput } from "@/components/ui/password-input";
-import { FaGoogle } from "react-icons/fa";
 import { LuKey, LuMail, LuUser } from "react-icons/lu";
 import { Field } from "@/components/ui/field";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router";
+import { Checkbox, message } from "antd"; // Ant Design Checkbox and Message (Toast)
 import Logo from "@/components/Logo";
 import { apiCallerPost } from "@/api/ApiCaller";
 
@@ -27,12 +24,6 @@ const SignUpPage = () => {
 	const navigate = useNavigate();
 	const flexDirection = useBreakpointValue({ base: "column", md: "row" });
 	const formWidth = useBreakpointValue({ base: "100%", md: "40%" });
-	const formAlignItems = useBreakpointValue({ base: "center" });
-	const formJustifyContent = useBreakpointValue({
-		base: "center",
-		md: "flex-start",
-	});
-	const logoWidth = useBreakpointValue({ base: "100px", md: "150px" });
 
 	// Form state
 	const [formData, setFormData] = useState({
@@ -41,7 +32,7 @@ const SignUpPage = () => {
 		first_name: "",
 		last_name: "",
 	});
-	const [error, setError] = useState("");
+	const [isChecked, setIsChecked] = useState(false); // Checkbox state
 	const [isLoading, setIsLoading] = useState(false);
 
 	// Handle form input changes
@@ -53,48 +44,48 @@ const SignUpPage = () => {
 		}));
 	};
 
+	// Handle checkbox change
+	const handleCheckboxChange = (e) => {
+		setIsChecked(e.target.checked);
+	};
+
 	// Submit handler
 	const handleSubmit = async () => {
+		if (!isChecked) {
+			message.error("Please agree to the terms & conditions before proceeding.");
+			return;
+		}
+
 		setIsLoading(true);
 
 		const { email, password, first_name, last_name } = formData;
 		if (!email || !password || !first_name || !last_name) {
-			setError("Please fill in all the required fields.");
+			message.error("Please fill in all the required fields.");
+			setIsLoading(false);
 			return;
 		}
 
-		const body = {
-			"email": email,
-			"password": password,
-			"first_name": first_name,
-			"last_name": last_name,
-		};
+		const body = { email, password, first_name, last_name };
 
-		console.log(body);
-		
-		setError("");
 		try {
 			const response = await apiCallerPost("/api/users/register/", body);
-			console.log(response);
-			
 			if (response.status === 201) {
-				alert("Registration successful!");
-				await apiCallerPost('/api/users/resend-otp/',{
-					email:email
-				}).then(()=>{
+				message.success("Registration successful!");
+				await apiCallerPost("/api/users/resend-otp/", { email }).then(() => {
 					navigate(`/otp-verification?isNew=true&email=${email}`);
-				}).catch((err)=>{
-					console.log(err);
-					
-				})
-			
-			} else {
-				
-				const error = JSON.stringify(response.response.data);
-				throw new Error(error || "Registration failed");
+				});
+			} else 
+			{
+				if(response.data.password){
+					throw new Error(response?.data.password[0] );
+				}else if (response.data.email) {
+					throw new Error(response?.data.email[0] );
+				}else{
+					throw new Error('Registeration failed because of server error');
+				}
 			}
 		} catch (err) {
-			setError(err.message || "Something went wrong. Please try again.");
+			message.error(err.message || "Something went wrong. Please try again.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -102,38 +93,20 @@ const SignUpPage = () => {
 
 	return (
 		<Container maxW='100vw' h='100vh' p={0} position='relative'>
-			<Flex
-				h='full'
-				direction={flexDirection}
-				align={formAlignItems}
-				justify={formJustifyContent}>
-				{/* Left side with form */}
-				<Box
-					w={formWidth}
-					p={{ base: 6, md: 8 }}
-					my='auto'
-					h='100vh'
-					overflowY='auto'
-					css={{
-						"&::-webkit-scrollbar-thumb": {
-							background: "transparent",
-						},
-					}}>
-					<VStack maxW='400px' mx='auto' gapY={10}>
-						<Box alignSelf='flex-start' w={logoWidth} mt={{ base: 10, md: 0 }}>
+		
+			<Flex h='full' direction={flexDirection} align='center' justify='center'>
+			<Box alignSelf='flex-start'  w='150px'>
 							<Logo />
 						</Box>
-						<VStack align='stretch' spaceY={{ base: 6, md: 8 }} w='full'>
+				{/* Left side with form */}
+				<Box w={formWidth} p={{ base: 6, md: 8 }} my='auto'>
+					<VStack maxW='400px' mx='auto' gapY={10}>
+						
+						<VStack align='stretch' w='full'>
 							{/* Form Header */}
 							<Box textAlign='left'>
-								<Heading
-									color='white'
-									fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
-									mb={2}>
-									Create an Account{" "}
-									<span role='img' aria-label='wave'>
-										👋
-									</span>
+								<Heading color='white' fontSize={{ base: "2xl", md: "4xl" }} mb={2}>
+									Create an Account 👋
 								</Heading>
 								<Text color='gray.400' fontSize={{ base: "sm", md: "md" }}>
 									Kindly fill in your details to create an account
@@ -143,11 +116,7 @@ const SignUpPage = () => {
 							{/* Form Fields */}
 							<VStack gapY={4} align='stretch'>
 								<Field label='Your first name' required>
-									<InputGroup
-										flex='1'
-										startElement={<LuUser />}
-										w='full'
-										size='lg'>
+									<InputGroup flex='1' startElement={<LuUser />} w='full' size='lg'>
 										<Input
 											name='first_name'
 											type='text'
@@ -162,11 +131,7 @@ const SignUpPage = () => {
 								</Field>
 
 								<Field label='Last Name' required>
-									<InputGroup
-										flex='1'
-										startElement={<LuUser />}
-										w='full'
-										size='lg'>
+									<InputGroup flex='1' startElement={<LuUser />} w='full' size='lg'>
 										<Input
 											name='last_name'
 											type='text'
@@ -181,11 +146,7 @@ const SignUpPage = () => {
 								</Field>
 
 								<Field label='Email address' required>
-									<InputGroup
-										flex='1'
-										startElement={<LuMail />}
-										w='full'
-										size='lg'>
+									<InputGroup flex='1' startElement={<LuMail />} w='full' size='lg'>
 										<Input
 											name='email'
 											type='email'
@@ -200,11 +161,7 @@ const SignUpPage = () => {
 								</Field>
 
 								<Field label='Create a password' required>
-									<InputGroup
-										flex='1'
-										startElement={<LuKey />}
-										w='full'
-										size='lg'>
+									<InputGroup flex='1' startElement={<LuKey />} w='full' size='lg'>
 										<PasswordInput
 											name='password'
 											placeholder='Password'
@@ -217,31 +174,30 @@ const SignUpPage = () => {
 									</InputGroup>
 								</Field>
 
-								{/* Checkbox */}
+								{/* Checkbox (Ant Design) */}
 								<Checkbox
-									colorPalette='purple'
-									size='md'
-									color='gray.400'
-									alignSelf='flex-start'
-									fontSize={{ base: "sm", md: "md" }}>
-									I agree to terms & conditions
-								</Checkbox>
+	checked={isChecked}
+	onChange={handleCheckboxChange}
+	style={{ color: "gray", alignSelf: "flex-start", fontSize: "14px" }}>
+	I agree to{" "}
+	<a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: "#805AD5" }}>
+		Terms and Conditions
+	</a>
+</Checkbox>
 
-								{/* Error Message */}
-								{error && (
-									<Text color='red.500' fontSize='sm' textAlign='center'>
-										{error}
-									</Text>
-								)}
+								
+								
 
 								{/* Register Button */}
 								<Button
 									w='full'
 									size='lg'
-									bg='primary'
 									color='white'
-									_hover={{ bg: "teal.600" }}
-									rounded='2xl'
+									border='none'
+									bg='linear-gradient(to right, #7B2C97, #008080)'
+									_hover={{
+										opacity: 0.9,
+									}}
 									mt={2}
 									isLoading={isLoading}
 									onClick={handleSubmit}>
@@ -252,23 +208,15 @@ const SignUpPage = () => {
 					</VStack>
 				</Box>
 
-				{/* Right side with illustration */}
+		
 				<Box
 					w={{ base: "100%", md: "60%" }}
 					h='full'
 					display={{ base: "none", md: "flex" }}
 					alignItems='center'
 					justifyContent='center'
-					position='relative'
-					overflow='hidden'>
-					<Image
-						src='/signin-bg.png'
-						alt='Sign-in Illustration'
-						objectFit='cover'
-						w='full'
-						h='full'
-						scale={1.1}
-					/>
+					position='relative'>
+					<Image src='/signup-bg.png' alt='Sign-in Illustration' objectFit='cover' w='full' h='full' />
 				</Box>
 			</Flex>
 		</Container>

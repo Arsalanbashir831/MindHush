@@ -21,19 +21,20 @@ import {
 } from "@/components/ui/drawer";
 import NewChatArea from "@/components/NewChatArea";
 import ChattingArea from "@/components/ChattingArea";
-import { apiCallerAuthGet, apiCallerGet } from "@/api/ApiCaller";
+import { apiCallerAuthGet } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const Dashboard = ({ isNewChart = false }) => {
-	const { token, isAuthenticated, logout } = useAuth();
-const navigation = useNavigate()	
+	const { token, isAuthenticated } = useAuth();
+	const navigate = useNavigate();
+	const { id } = useParams(); // ✅ Extract chatId from URL
+	const isDrawer = useBreakpointValue({ base: true, md: false });
+
 	const [activeChat, setActiveChat] = useState(null);
 	const [chats, setChats] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-
-	const isDrawer = useBreakpointValue({ base: true, md: false });
 
 	useEffect(() => {
 		const fetchChats = async () => {
@@ -41,18 +42,23 @@ const navigation = useNavigate()
 				setIsLoading(false);
 				return;
 			}
-	
+
 			setIsLoading(true);
 			setError(null);
-	
+
 			try {
 				console.log("Fetching chats with token:", token);
 				const response = await apiCallerAuthGet("/api/chats/user/", token);
-	
+
 				if (response?.status === 200) {
 					setChats(response.data);
-					if (response.data.length > 0) {
-						setActiveChat(response.data[0].id); // Set the first chat as active by default
+
+					// ✅ Set active chat based on URL params or fallback to the first chat
+					if (id && response.data.some(chat => chat.id === parseInt(id))) {
+						setActiveChat(parseInt(id)); // ✅ Set active chat from URL
+					} else if (response.data.length > 0) {
+						setActiveChat(response.data[0].id); // ✅ Fallback to first chat
+						navigate(`/c/${response.data[0].id}`); // ✅ Update URL if no valid chatId
 					}
 				} else {
 					throw new Error(response?.data?.messages || "Failed to fetch chats.");
@@ -64,46 +70,53 @@ const navigation = useNavigate()
 				setIsLoading(false);
 			}
 		};
-	
-		// Ensure fetchChats is always called when the component mounts or token changes
+
 		if (isAuthenticated && token) {
 			fetchChats();
 		}
-	}, [token, isAuthenticated]);
-	
+	}, [token, isAuthenticated ]); 
 
 	const categorizeChats = (chats) => {
-		console.log('chats',chats);
-		
+		console.log('Raw Chats:', chats);
+
 		const today = new Date();
 		const yesterday = new Date(today);
 		yesterday.setDate(today.getDate() - 1);
+
+		const sevenDaysAgo = new Date(today);
+		sevenDaysAgo.setDate(today.getDate() - 7);
+
+		const thirtyDaysAgo = new Date(today);
+		thirtyDaysAgo.setDate(today.getDate() - 30);
 
 		const categories = {
 			"Today": [],
 			"Yesterday": [],
 			"Previous 7 Days": [],
 			"Previous 30 Days": [],
-			"older": [],
+			"Older": [],
 		};
 
 		chats.forEach((chat) => {
 			const chatDate = new Date(chat?.created_at);
-			if (chatDate === today) {
-				categories.Today.push(chat);
-			} else if (chatDate.toDateString() === yesterday.toDateString()) {
-				categories.Yesterday.push(chat);
-			} else if (chatDate > new Date(today.setDate(today.getDate() - 7))) {
+			const chatDateString = chatDate.toDateString();
+			const todayString = today.toDateString();
+			const yesterdayString = yesterday.toDateString();
+
+			if (chatDateString === todayString) {
+				categories["Today"].push(chat);
+			} else if (chatDateString === yesterdayString) {
+				categories["Yesterday"].push(chat);
+			} else if (chatDate >= sevenDaysAgo) {
 				categories["Previous 7 Days"].push(chat);
-			} else if (chatDate > new Date(today.setDate(today.getDate() - 30))) {
+			} else if (chatDate >= thirtyDaysAgo) {
 				categories["Previous 30 Days"].push(chat);
 			} else {
-				categories.older.push(chat);
+				categories["Older"].push(chat);
 			}
-
 		});
-		console.log('categories',categories);
-		
+
+		console.log('Categorized Chats:', categories);
 		return categories;
 	};
 

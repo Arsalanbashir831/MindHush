@@ -9,6 +9,8 @@ import BlogPost from "./pages/BlogPost";
 import ForgetPassword from "./pages/ForgetPassword";
 import OtpVerification from "./pages/OtpVerification";
 import ResetPassword from "./pages/ResetPassword";
+import Emergency from "./pages/Emergency";
+import TermsCondition from "./pages/TermsCondition";
 
 const App = () => {
 	return (
@@ -17,6 +19,8 @@ const App = () => {
 			<Box as='main' flex='1' overflow='hidden'>
 				<Routes>
 					<Route path='/' element={<LandingPage />} />
+					<Route path='/terms' element={<TermsCondition />} />
+					<Route path='/emergency' element={<Emergency />} />
 					<Route path='/forget-password' element={<ForgetPassword />} />
 					<Route path='/otp-verification' element={<OtpVerification />} />
 					<Route path='/reset-password' element={<ResetPassword />} />

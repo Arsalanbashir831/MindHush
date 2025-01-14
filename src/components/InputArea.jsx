@@ -6,7 +6,7 @@ import { IconButton, Input, Spinner } from "@chakra-ui/react";
 export default function InputArea({
     isLoading = false,
     widthOnSS = "md",
-    widthOnLS = "3xl",
+    widthOnLS = "full",
     onSubmitClick, // Delegate submission logic to the parent
 }) {
     const [value, setValue] = useState("");

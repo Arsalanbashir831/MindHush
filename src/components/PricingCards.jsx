@@ -139,7 +139,7 @@ else{
                         : price === "0.00"
                         ? "Cancel Subscription"
                         : "Subscribe"} */}
-                        {profile?.is_premium ?'Cancel Subscription':'Subscribe'}
+                        {profile?.is_premium ?'Downgrade Subscription':'Subscribe'}
                 </Button>
 
                 </>)}

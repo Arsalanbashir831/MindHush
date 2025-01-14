@@ -55,7 +55,7 @@ export default function FeaturesSection() {
 			icon: "/medical-icon.png",
 			title: "Evidence-Based Support",
 			description:
-				"Our content is developed with insights from mental health experts, ensuring it's both effective and reliable.",
+				"Grounded in research, built for your peace of mind.",
 		},
 		{
 			icon: "/medical-icon.png",
