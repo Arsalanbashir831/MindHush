@@ -42,3 +42,11 @@ body {
 .dark-modal .ant-modal-footer {
     border-top: 1px solid #333 !important;
 }
+.dark-row {
+	background-color: #1f1f1f !important;
+	color: #fff;
+  }
+  
+  .dark-row:hover {
+	background-color: #333 !important;
+  }

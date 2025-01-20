@@ -24,13 +24,15 @@ import FeaturesSection from "@/components/FeaturesSection";
 import Logo from "@/components/Logo";
 import { useNavigate } from "react-router";
 import { BiLogoTiktok } from "react-icons/bi";
-import { useAuth } from "@/context/AuthContext";
+
 import FooterSection from "@/components/FooterSection";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/atom/state";
 
 const LandingPage = () => {
-   const {isAuthenticated} = useAuth()
+  const isAuthenticated = useRecoilValue(authState)
 
-  //  console.log(isAuthenticated);
+    console.log(isAuthenticated);
    
   const navigate = useNavigate();
   return (

@@ -13,15 +13,22 @@ import {
 import { FaCaretDown } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import UserProfileModal from "./UserProfileModal";
+import { useRecoilValue } from "recoil";
+import { authState, userState } from "@/atom/state";
 
 export default function AuthButtons() {
-	const { isAuthenticated, logout, profile } = useAuth();
+	//const { isAuthenticated, logout, profile } = useAuth();
+	const isAuthenticated = useRecoilValue(authState)
+	const profile = useRecoilValue(userState)
 	const navigate = useNavigate();
 	
 	const handleLogout = () => {
-		logout();
+		// logout();
+		localStorage.removeItem("authToken"); 
+		localStorage.removeItem("profile"); 
 		navigate("/login");
 	};
+console.log('auth btns',profile);
 
 	return (
 		<HStack>

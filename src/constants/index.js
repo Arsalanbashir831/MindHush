@@ -3,188 +3,213 @@ export const PRICING_PLANS = [
 		title: "Freemium",
 		price: "0.00",
 		description:
-			"Get a taste of free membership and enjoy tokens limited to 1000 per day",
+			"Access to AIRA chatbot Limited to 1000 tokens per day Cooldown period of 24 hours",
+			isPopular: false,
+		type:'free'
 	},
 	{
-		title: "Preemium",
+		title: "Premium",
 		price: "9.99",
 		originalPrice: "",
 		description: "Enjoy access to pro member features and unlimited chats",
 		isPopular: true,
+		type:'monthly'
+	},
+	{
+		title: "Premium",
+		price: "99.9",
+		originalPrice: "",
+		description: "Enjoy access to pro member features and unlimited chats",
+		isPopular: true,
+		type:'yearly'
 	},
 ];
 
 
 
 
-export const EMERGENCY_CONTACTLIST=[
+export const EMERGENCY_CONTACTLIST= [
 	  {
-		"country": "United States",
-		"general_emergency": "911",
-		"suicide_prevention": "988"
-	  },
-	  {
-		"country": "Canada",
-		"general_emergency": "911",
-		"suicide_prevention": "988"
+		"country": "United States and Canada",
+		"generalEmergency": "911",
+		"suicidePrevention": "988",
+		"notes": "Suicide & Crisis Lifeline in the U.S."
 	  },
 	  {
 		"country": "United Kingdom",
-		"general_emergency": ["999", "112"],
-		"suicide_prevention": "116 123"
+		"generalEmergency": "999 or 112",
+		"suicidePrevention": "116 123",
+		"notes": "Samaritans for suicide prevention"
 	  },
 	  {
 		"country": "Australia",
-		"general_emergency": "000",
-		"suicide_prevention": "13 11 14"
+		"generalEmergency": "000",
+		"suicidePrevention": "13 11 14",
+		"notes": "Lifeline for crisis support"
 	  },
 	  {
 		"country": "India",
-		"general_emergency": "112",
-		"suicide_prevention": "+91 9820466726"
+		"generalEmergency": "112",
+		"suicidePrevention": "+91 9820466726",
+		"notes": "AASRA for mental health"
 	  },
 	  {
 		"country": "South Africa",
-		"general_emergency": "112",
-		"suicide_prevention": "0800 567 567"
+		"generalEmergency": "112",
+		"suicidePrevention": "0800 567 567",
+		"notes": "Suicide Crisis Helpline"
 	  },
 	  {
 		"country": "Germany",
-		"general_emergency": "112",
-		"suicide_prevention": "0800 111 0111"
+		"generalEmergency": "112",
+		"suicidePrevention": "0800 111 0111",
+		"notes": "Telefonseelsorge"
 	  },
 	  {
 		"country": "France",
-		"general_emergency": "112",
-		"suicide_prevention": "01 45 39 40 00"
+		"generalEmergency": "112",
+		"suicidePrevention": "01 45 39 40 00",
+		"notes": "SOS Help for suicide prevention"
 	  },
 	  {
 		"country": "Netherlands",
-		"general_emergency": "112",
-		"suicide_prevention": "0900 0113"
+		"generalEmergency": "112",
+		"suicidePrevention": "0900 0113",
+		"notes": "113 Suicide Prevention"
 	  },
 	  {
 		"country": "Japan",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "110",
-		  "fire_ambulance": "119"
+		  "fireAmbulance": "119"
 		},
-		"suicide_prevention": "03 5286 9090"
+		"suicidePrevention": "03 5286 9090",
+		"notes": "Tokyo English Lifeline"
 	  },
 	  {
 		"country": "China",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "110",
 		  "ambulance": "120"
 		},
-		"suicide_prevention": "0800 810 1117"
+		"suicidePrevention": "0800 810 1117",
+		"notes": "Crisis Hotline"
 	  },
 	  {
 		"country": "Russia",
-		"general_emergency": "112",
-		"suicide_prevention": "8 800 2000 122"
+		"generalEmergency": "112",
+		"suicidePrevention": "8 800 2000 122",
+		"notes": "Crisis Center"
 	  },
 	  {
 		"country": "Brazil",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "190",
 		  "ambulance": "192"
 		},
-		"suicide_prevention": "188"
+		"suicidePrevention": "188",
+		"notes": "CVV for emotional support"
 	  },
 	  {
 		"country": "Mexico",
-		"general_emergency": "911",
-		"suicide_prevention": "800 822 3737"
+		"generalEmergency": "911",
+		"suicidePrevention": "800 822 3737",
+		"notes": "SAPTEL for suicide prevention"
 	  },
 	  {
 		"country": "Argentina",
-		"general_emergency": "911",
-		"suicide_prevention": "135"
+		"generalEmergency": "911",
+		"suicidePrevention": "135",
+		"notes": "Suicide Assistance Line in Buenos Aires"
 	  },
 	  {
 		"country": "New Zealand",
-		"general_emergency": "111",
-		"suicide_prevention": "1737"
+		"generalEmergency": "111",
+		"suicidePrevention": "1737",
+		"notes": "Need to Talk? Service"
 	  },
 	  {
 		"country": "Singapore",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "999",
 		  "ambulance": "995"
 		},
-		"suicide_prevention": "1800 221 4444"
+		"suicidePrevention": "1800 221 4444",
+		"notes": "Samaritans of Singapore"
 	  },
 	  {
 		"country": "South Korea",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "112",
-		  "ambulance_fire": "119"
+		  "ambulanceFire": "119"
 		},
-		"suicide_prevention": "1577 0199"
+		"suicidePrevention": "1577 0199",
+		"notes": "Lifeline Korea"
 	  },
 	  {
 		"country": "Italy",
-		"general_emergency": "112",
-		"suicide_prevention": "800 86 00 22"
+		"generalEmergency": "112",
+		"suicidePrevention": "800 86 00 22",
+		"notes": "Telefono Amico"
 	  },
 	  {
 		"country": "Spain",
-		"general_emergency": "112",
-		"suicide_prevention": "024"
+		"generalEmergency": "112",
+		"suicidePrevention": "024",
+		"notes": "Suicide Helpline"
 	  },
 	  {
 		"country": "Sweden",
-		"general_emergency": "112",
-		"suicide_prevention": "90101"
+		"generalEmergency": "112",
+		"suicidePrevention": "90101",
+		"notes": "Suicide Prevention Hotline"
 	  },
 	  {
 		"country": "Philippines",
-		"general_emergency": "911",
-		"suicide_prevention": "1553"
+		"generalEmergency": "911",
+		"suicidePrevention": "1553",
+		"notes": "Hopeline for suicide prevention"
 	  },
 	  {
 		"country": "Malaysia",
-		"general_emergency": "999",
-		"suicide_prevention": "03 7956 8144"
+		"generalEmergency": "999",
+		"suicidePrevention": "03 7956 8144",
+		"notes": "Befrienders KL"
 	  },
 	  {
 		"country": "Pakistan",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "15",
 		  "ambulance": "1122"
 		},
-		"suicide_prevention": "0333 333 2662"
+		"suicidePrevention": "0333 333 2662",
+		"notes": "Suicide Prevention Helpline"
 	  },
 	  {
 		"country": "Turkey",
-		"general_emergency": "112",
-		"suicide_prevention": "0216 449 90 00"
+		"generalEmergency": "112",
+		"suicidePrevention": "0216 449 90 00",
+		"notes": "Mental Health Helpline"
 	  },
 	  {
 		"country": "United Arab Emirates",
-		"general_emergency": {
+		"generalEmergency": {
 		  "police": "999",
 		  "ambulance": "998"
 		},
-		"suicide_prevention": "800 4673"
-	  },
-	  {
-		"country": "Europe (General)",
-		"general_emergency": "112"
-	  },
-	  {
-		"country": "Asia (General)",
-		"general_emergency": "Varies (typically 110/119)"
-	  },
-	  {
-		"country": "Africa (General)",
-		"general_emergency": "Varies (commonly 112)"
-	  },
-	  {
-		"country": "Latin America (General)",
-		"general_emergency": "911 (in many countries)"
+		"suicidePrevention": "800 4673",
+		"notes": "Crisis Helpline"
 	  }
 	]
+
+export const RegionalLines={
+	  "Europe": "112 (EU emergency number)",
+	  "Asia": "Varies by country, typically 110/119 for emergency services",
+	  "Africa": "Varies by country, commonly 112 for emergency services",
+	  "LatinAmerica": "911 in many countries, local suicide prevention lines available"
+	}
+	
+
+  
   
   

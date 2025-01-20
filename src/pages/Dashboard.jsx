@@ -35,7 +35,7 @@ const Dashboard = ({ isNewChart = false }) => {
 	const [chats, setChats] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-
+const [refresh , setRefresh] = useState(false)
 	useEffect(() => {
 		const fetchChats = async () => {
 			if (!token) {
@@ -74,7 +74,7 @@ const Dashboard = ({ isNewChart = false }) => {
 		if (isAuthenticated && token) {
 			fetchChats();
 		}
-	}, [token, isAuthenticated ]); 
+	}, [token, isAuthenticated , refresh]); 
 
 	const categorizeChats = (chats) => {
 		console.log('Raw Chats:', chats);
@@ -126,7 +126,7 @@ const Dashboard = ({ isNewChart = false }) => {
 		<Box minH='100vh' color='white'>
 			<HStack w='full' spacing={0}>
 				{!isDrawer && (
-					<Sidebar
+					<Sidebar refresh={refresh} setRefresh={setRefresh}
 						categorizedChats={categorizedChats}
 						activeChat={activeChat}
 						setActiveChat={setActiveChat}
@@ -152,11 +152,12 @@ const Dashboard = ({ isNewChart = false }) => {
 									</IconButton>
 								</DrawerTrigger>
 								<DrawerContent>
-									<Sidebar
+									<Sidebar refresh={refresh} setRefresh={setRefresh}
 										isDrawer={isDrawer}
 										categorizedChats={categorizedChats}
 										activeChat={activeChat}
 										setActiveChat={setActiveChat}
+										
 									/>
 									<DrawerCloseTrigger />
 								</DrawerContent>

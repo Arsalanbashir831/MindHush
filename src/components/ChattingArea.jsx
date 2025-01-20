@@ -5,12 +5,14 @@ import ChatMessage from "./ChatMessage";
 import InputArea from "./InputArea";
 import { apiCallerAuthPost, apiCallerAuthGet } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
+import { useRecoilState } from "recoil";
+import { refreshState } from "@/atom/state";
 
 const ChattingArea = () => {
     const { id } = useParams(); 
     const { state } = useLocation(); 
     const navigate = useNavigate();
-    const { token } = useAuth(); 
+    const { token  } = useAuth(); 
 
     const [messages, setMessages] = useState([]);
     const [chatId, setChatId] = useState(null);
@@ -18,7 +20,7 @@ const ChattingArea = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isAIResponseLoading, setIsAIResponseLoading] = useState(false);
     const lastMessageRef = useRef(null); // ✅ Reference to last message
-
+const [refresh , setRefresh] = useRecoilState(refreshState)
     // ✅ Auto-scroll to the last message
     const scrollToBottom = () => {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,7 +74,7 @@ const ChattingArea = () => {
                             { content: state },
                             token
                         );
-
+                 
                         setMessages([
                             { message: addMessageResponse.data.content, isUser: true },
                             { message: addMessageResponse.data.ai_response, isUser: false },
@@ -117,6 +119,7 @@ const ChattingArea = () => {
             );
 
             if (addMessageResponse.status === 201) {
+                setRefresh(!refresh)
                 setMessages((prev) =>
                     prev.map((msg, index) =>
                         msg.id === dummyId

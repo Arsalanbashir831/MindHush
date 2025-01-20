@@ -24,12 +24,14 @@ import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import Logo from "@/components/Logo";
 import { apiCallerPost } from "@/api/ApiCaller";
+import { authState } from "@/atom/state";
+import { useRecoilState } from "recoil";
 
 const SignInPage = () => {
 
 	const navigate = useNavigate();
-	const { login,  setProfileData } = useAuth();
-
+	// const { login,  setProfileData } = useAuth();
+const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 	const flexDirection = useBreakpointValue({ base: "column", md: "row" });
 	const formWidth = useBreakpointValue({ base: "100%", md: "40%" });
 	const formAlignItems = useBreakpointValue({ base: "center" });
@@ -59,19 +61,23 @@ const SignInPage = () => {
 		
 			if (response?.status === 200 && response?.data?.access) {
 				// Save token in auth context or local storage
-				login({ token: response.data.access });
+				// login({ token: response.data.access });
         		setAuthToken(response.data.access); // Set token globally
+				localStorage.setItem('authToken', response.data.access)
+				localStorage.setItem('refreshToken',response.data.refresh)
+				setIsAuthenticated(true)
+				navigate("/c/new");
 				
-				const responseProfile = await apiCallerAuthGet("/api/users/profile/", response.data.access);
+				// const responseProfile = await apiCallerAuthGet("/api/users/profile/", response.data.access);
 
-				if (responseProfile?.status === 200) {
-					setProfileData(responseProfile.data);
-					console.log(responseProfile.data);
-					navigate("/c/new");
-				}
-				else{
-					throw new Error("Login failed. Please check your credentials.");
-				}
+				// if (responseProfile?.status === 200) {
+				// 	setProfileData(responseProfile.data);
+				// 	console.log(responseProfile.data);
+				// 	navigate("/c/new");
+				// }
+				// else{
+				// 	throw new Error("Login failed. Please check your credentials.");
+				// }
 				
 			} else {
 				throw new Error("Login failed. Please check your credentials.");

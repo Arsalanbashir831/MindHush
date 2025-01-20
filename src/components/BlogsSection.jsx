@@ -12,46 +12,47 @@ import {
 import { useNavigate } from "react-router";
 import axios from "axios"; // Assuming axios is installed
 import { apiCallerGet, BASE_URL } from "@/api/ApiCaller";
+import { BlogCard } from "./BlogCard";
 
-const BlogCard = ({ image, title, number }) => {
-	const navigate = useNavigate();
+// const BlogCard = ({ image, title, number }) => {
+// 	const navigate = useNavigate();
 
-	return (
-		<Box
-			position="relative"
-			flex="0 0 auto"
-			maxW={{ base: "100%", md: "48%" }}
-			mb={{ base: 8, md: 0 }}
-			cursor="pointer"
-			transition="transform 0.2s"
-			_hover={{ transform: "scale(1.02)" }}
-			onClick={() => navigate(`/blogs/${number}?${title}`)}
-		>
-			<Image
-				src={`${BASE_URL+`/`+image}`}
-				alt={title}
-				height={{ base: "250px", md: "350px" }}
-				width="100%"
-				objectFit="cover"
-				borderRadius="lg"
-			/>
-			<VStack
-				position="absolute"
-				bottom={4}
-				left={4}
-				align="flex-start"
-				spacing={1}
-			>
-				<Text color="white" fontSize={{ base: "sm", md: "lg" }}>
-					Blog {number}
-				</Text>
-				<Text color="white" fontSize={{ base: "md", md: "lg" }} noOfLines={2}>
-					{title}
-				</Text>
-			</VStack>
-		</Box>
-	);
-};
+// 	return (
+// 		<Box
+// 			position="relative"
+// 			flex="0 0 auto"
+// 			maxW={{ base: "100%", md: "48%" }}
+// 			mb={{ base: 8, md: 0 }}
+// 			cursor="pointer"
+// 			transition="transform 0.2s"
+// 			_hover={{ transform: "scale(1.02)" }}
+// 			onClick={() => navigate(`/blogs/${number}?${title}`)}
+// 		>
+// 			<Image
+// 				src={`${BASE_URL+`/`+image}`}
+// 				alt={title}
+// 				height={{ base: "250px", md: "350px" }}
+// 				width="100%"
+// 				objectFit="cover"
+// 				borderRadius="lg"
+// 			/>
+// 			<VStack
+// 				position="absolute"
+// 				bottom={4}
+// 				left={4}
+// 				align="flex-start"
+// 				spacing={1}
+// 			>
+// 				<Text color="white" fontSize={{ base: "sm", md: "lg" }}>
+// 					Blog {number}
+// 				</Text>
+// 				<Text color="white" fontSize={{ base: "md", md: "lg" }} noOfLines={2}>
+// 					{title}
+// 				</Text>
+// 			</VStack>
+// 		</Box>
+// 	);
+// };
 
 const BlogsSection = () => {
 	const [blogs, setBlogs] = useState([]);
@@ -105,7 +106,7 @@ const BlogsSection = () => {
 					size="lg"
 					_hover={{ transform: "translateX(4px)" }}
 					transition="transform 0.2s"
-					onClick={() => navigate("/blogs")} // Assuming "/blogs" is the route for all blogs
+					onClick={() => navigate("/blogs-list")} // Assuming "/blogs" is the route for all blogs
 				>
 				MORE
 					<Image src="/icons/arrow_right_icon.svg" alt="Arrow right" w={10} />

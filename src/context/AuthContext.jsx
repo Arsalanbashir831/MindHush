@@ -1,5 +1,7 @@
-import { apiCallerAuthGet } from "@/api/ApiCaller";
+import { apiCallerAuthGet, apiCallerPost } from "@/api/ApiCaller";
+import { authState, userState } from "@/atom/state";
 import  { createContext, useContext, useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 
 
 // Create AuthContext
@@ -11,47 +13,54 @@ export const useProfile = () => useContext(profileContext);
 
 // Enhanced AuthProvider
 export const AuthProvider = ({ children }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState);
 	const [token, setToken] = useState(null);
-	const [profile, setProfile] = useState(null);
+	const [profile, setProfile] = useRecoilState(userState);
 
-	// Persist token to local storage
+
+	const verifyRefreshToken = async(token,refreshToken)=>{
+		if(token && refreshToken){
+		const response =	await apiCallerPost('/api/token/verify/',{
+			 "token": token
+		})
+		if(response.status===200){
+			setToken(token);
+			updateProfile(token)
+			setIsAuthenticated(true);
+		}else{
+			const refreshResponse = await apiCallerPost('/api/token/refresh/',{
+				'refresh': refreshToken
+			})
+			if (refreshResponse.status===200) {
+				setToken(refreshResponse.data.access);
+				localStorage.setItem('authToken', refreshResponse.data.access)
+				localStorage.setItem('refresh',refreshResponse.data.refresh)
+				updateProfile(token)
+				setIsAuthenticated(true);
+			}
+		}
+		
+		}else{
+			window.location.href='/login'
+		}
+	}
 	useEffect(() => {
 		const storedToken = localStorage.getItem("authToken");
-		if (storedToken) {
-			setToken(storedToken);
-			setIsAuthenticated(true);
-		}
+		const refreshToken = localStorage.getItem('refreshToken')
+		verifyRefreshToken(storedToken,refreshToken)
 
-		const storedProfile = JSON.parse(localStorage.getItem("profile"));
-		if (storedProfile) {
-			setProfile(storedProfile);
-		}
 	}, []);
 
-	// Login function
 	const login = ({ token }) => {
 		setToken(token);
 		setIsAuthenticated(true);
 		localStorage.setItem("authToken", token); // Persist token
 	};
 
-	const setProfileData = (profile) => {
-		setProfile(profile);
-		localStorage.setItem("profile", JSON.stringify(profile));
-	}
-
-	// const getProfileData = () => {
-	// 	const storedProfile = localStorage.getItem("profile");
-	// 	if (storedProfile) {
-	// 		setProfile(JSON.parse(storedProfile));
-	// 	}
-	// }
-
 	const updateProfile = (token) => {
-		apiCallerAuthGet("/api/users/profile", token).then((res) => {
+		apiCallerAuthGet("/api/users/profile/", token).then((res) => {
 			if (res.status === 200) {
-				setProfileData(res.data);
+				setProfile(res.data);
 			}
 		}).catch((err) => {
 			console.log(err);
@@ -66,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, token, login, logout, profile, setProfileData, updateProfile }}>
+		<AuthContext.Provider value={{ isAuthenticated, token,  logout, profile,  updateProfile,setToken }}>
 			{children}
 		</AuthContext.Provider>
 	);

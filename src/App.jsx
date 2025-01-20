@@ -11,8 +11,39 @@ import OtpVerification from "./pages/OtpVerification";
 import ResetPassword from "./pages/ResetPassword";
 import Emergency from "./pages/Emergency";
 import TermsCondition from "./pages/TermsCondition";
+import { AuthProvider } from "./context/AuthContext";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { authState, userState } from "./atom/state";
+import { apiCallerAuthGet } from "./api/ApiCaller";
+import Feedback from "./pages/Feedback";
+import BlogList from "./pages/BlogList";
 
 const App = () => {
+	const [profile , setProfile] = useRecoilState(userState)
+	const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
+	useEffect(()=>{
+		const updateProfile = () => {
+			const token = localStorage.getItem('authToken')
+			if(token){
+				apiCallerAuthGet("/api/users/profile/", token).then((res) => {
+					if (res.status === 200) {
+						setProfile(res.data);
+						setIsAuthenticated(true)
+						
+					}
+				}).catch((err) => {
+					console.log(err);
+				})
+			}else{
+				setProfile(null)
+			}
+			
+		}
+		updateProfile()
+	},[])
+	
+	
 	return (
 		<Flex direction='column' height='100vh' overflow='hidden'>
 			{/* <Header /> */}
@@ -24,11 +55,29 @@ const App = () => {
 					<Route path='/forget-password' element={<ForgetPassword />} />
 					<Route path='/otp-verification' element={<OtpVerification />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/c/new' element={<Dashboard isNewChart={true} />} />
-					<Route path='/c/:id' element={<Dashboard />} />
-					<Route path='/login' element={<SignInPage />} />
+					<Route path='/feedback' element={<Feedback />} />
+					
+				
+					<Route path='/c/new' element={
+						<AuthProvider>
+						<Dashboard isNewChart={true} />
+						</AuthProvider>
+						} />
+					<Route path='/c/:id' element={
+						<AuthProvider>
+						<Dashboard />
+						</AuthProvider>
+						} />
+				
+					<Route path='/login' element={
+						
+						<SignInPage />
+						
+						} />
+					
 					<Route path='/signup' element={<SignUpPage />} />
 					<Route path='/pricing-plans' element={<PricingPlans />} />
+					<Route path='/blogs-list' element={<BlogList />} />
 					<Route path='/blogs/:id' element={<BlogPost />} />
 				</Routes>
 			</Box>

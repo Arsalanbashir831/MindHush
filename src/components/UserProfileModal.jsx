@@ -14,13 +14,18 @@ import { useAuth } from "@/context/AuthContext";
 import { MenuItem } from "./ui/menu";
 import TokensBox from "./TokensBox";
 import { Link, useNavigate } from "react-router";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/atom/state";
 
 const UserProfileModal = () => {
-	const { logout, profile } = useAuth();
+	// const { logout, profile } = useAuth();
+	const profile = useRecoilValue(userState)
+	
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
-		logout();
+		localStorage.removeItem("authToken"); 
+		localStorage.removeItem("profile");
 		navigate("/login");
 	};
 
