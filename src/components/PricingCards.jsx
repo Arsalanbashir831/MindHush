@@ -236,7 +236,7 @@ export default function PricingCards({ pricingPlans }) {
   
   return (
     <>
-      <HStack>
+      <HStack justifyContent={'center'}>
         <Text> Monthly</Text>
         <Switch
           size="lg"

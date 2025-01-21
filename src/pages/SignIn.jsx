@@ -26,6 +26,8 @@ import Logo from "@/components/Logo";
 import { apiCallerPost } from "@/api/ApiCaller";
 import { authState } from "@/atom/state";
 import { useRecoilState } from "recoil";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+
 
 const SignInPage = () => {
 
@@ -89,6 +91,31 @@ const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 		}
 	};
 
+	const handleGoogleLoginSuccess = async (response) => {
+		console.log("Google Login Successful:", response);
+		try {
+		apiCallerPost("/api/users/google-auth/", { id_token: response.credential }).then((res) => {
+			if (res.status === 200) {
+				console.log("Login Successful:", res.data);
+				localStorage.setItem("authToken", res.data.access);
+				localStorage.setItem("refreshToken", res.data.refresh);
+				setIsAuthenticated(true)
+				navigate("/c/new");
+			} else {
+				console.error("Backend Error:", res.data.error);
+				throw new Error(res.data.error || "Google Login failed");
+			}
+		})
+		} catch (err) {
+		  console.error("Error:", err.message || "Google Login failed");
+		  setError(err.message || "Google Login failed");
+		} 
+	  };
+
+
+
+	
+	
 	return (
 		<Container maxW='100vw' h='100vh' p={0} position='relative'>
 			<Box alignSelf='flex-start' w={logoWidth} mx={10} mt={4} mb={0}>
@@ -230,26 +257,12 @@ const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 								<Text fontSize='sm'>Or continue with</Text>
 
 								{/* Social Login Buttons */}
-								<HStack gap={4} justify='center' w='full'>
-									<Button
-										variant='outline'
-										size='lg'
-										bg='gray.800'
-										_hover={{ bg: "gray.700" }}
-										flex='1'>
-										<FaGoogle style={{ marginRight: "8px" }} />
-										Google
-									</Button>
-									{/* <Button
-										variant='outline'
-										size='lg'
-										bg='gray.800'
-										_hover={{ bg: "gray.700" }}
-										flex='1'>
-										<FaFacebook style={{ marginRight: "8px" }} />
-										Facebook
-									</Button> */}
-								</HStack>
+								<HStack gap={4} justify="center" w="full">
+      {/* Custom Google Login Button */}
+     
+
+	  <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={()=>{console.log('Login Failed')}}/>
+    </HStack>
 
 								{/* Terms and Conditions */}
 								<Text fontSize='sm' mt={4}>

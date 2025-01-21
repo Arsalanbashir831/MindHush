@@ -18,6 +18,7 @@ import { authState, userState } from "./atom/state";
 import { apiCallerAuthGet } from "./api/ApiCaller";
 import Feedback from "./pages/Feedback";
 import BlogList from "./pages/BlogList";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const App = () => {
 	const [profile , setProfile] = useRecoilState(userState)
@@ -70,12 +71,19 @@ const App = () => {
 						} />
 				
 					<Route path='/login' element={
-						
+						<GoogleOAuthProvider clientId="73746778952-bssa8fhr60ar7kh05ghod56nv4qeuvdi.apps.googleusercontent.com">
 						<SignInPage />
+						</GoogleOAuthProvider>
 						
 						} />
 					
-					<Route path='/signup' element={<SignUpPage />} />
+					<Route path='/signup' element={<>
+					<GoogleOAuthProvider clientId="73746778952-bssa8fhr60ar7kh05ghod56nv4qeuvdi.apps.googleusercontent.com">
+					<SignUpPage />
+					</GoogleOAuthProvider>
+					
+
+					</>} />
 					<Route path='/pricing-plans' element={<PricingPlans />} />
 					<Route path='/blogs-list' element={<BlogList />} />
 					<Route path='/blogs/:id' element={<BlogPost />} />
