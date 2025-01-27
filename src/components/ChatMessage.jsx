@@ -38,7 +38,7 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
 
             {/* AI/User Message Bubble */}
             <Box
-                maxW="60%"
+                maxW="40%"
                 color="white"
                 px={4}
                 py={3}

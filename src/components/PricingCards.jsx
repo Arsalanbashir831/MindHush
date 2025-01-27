@@ -163,7 +163,7 @@ console.log('testing',subscriptionType==='monthly');
           )}
         </HStack>
         <Text fontSize={{ base: "sm", md: "md" }} color="gray.400">
-          per month, paid {price === "0.00" ? "nothing" :isAnnual?'Annually':'Monthly'}
+           {price === "0.00" ? "Free" :isAnnual?' Per Year':' Per Month'}
         </Text>
        {isPopular &&(<>
      

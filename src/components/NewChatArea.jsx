@@ -38,10 +38,10 @@ export default function NewChat({ isDrawer }) {
     };
 
     const categories = [
-        { name: "Parenting", icon: "/icons/parenting_icon.svg", prompts: prompts.Parenting },
-        { name: "Mental Health", icon: "/icons/mental_health_icon.svg", prompts: prompts.MentalHealth },
-        { name: "Financial", icon: "/icons/financial_icon.svg", prompts: prompts.Financial },
-        { name: "Identity", icon: "/icons/user_icon.svg", prompts: prompts.Identity }
+        { name: "Parenting", icon: "/icons/parenting_icon.svg", prompts: prompts.Parenting , label : "Parenting"},
+        { name: "MentalHealth", icon: "/icons/mental_health_icon.svg", prompts: prompts.MentalHealth , label:'Mental Health' },
+        { name: "Financial", icon: "/icons/financial_icon.svg", prompts: prompts.Financial, label:'Financial' },
+        { name: "Identity", icon: "/icons/user_icon.svg", prompts: prompts.Identity , label:'Identity' }
     ];
 
     // Store a random index for each category in state
@@ -193,7 +193,7 @@ export default function NewChat({ isDrawer }) {
                                         <Image src={category.icon} alt={category.name} w={5} h={5} />
                                     </Box>
                                     <Text fontSize="sm" textAlign="center">
-                                        {category.name}
+                                        {category.label}
                                     </Text>
                                 </VStack>
                             </Box>

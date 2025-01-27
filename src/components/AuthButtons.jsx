@@ -48,7 +48,7 @@ console.log('auth btns',profile);
 					<MenuRoot>
 						<MenuTrigger asChild>
 							<Button variant='plain' size='sm'>
-								<FaCaretDown />
+								<FaCaretDown color="white" />
 							</Button>
 						</MenuTrigger>
 						<MenuContent minW='10rem'>

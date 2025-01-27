@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { VStack, Flex, Box, Spinner, Center } from "@chakra-ui/react";
+import { VStack, Flex, Box, Spinner, Center,Text } from "@chakra-ui/react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import ChatMessage from "./ChatMessage";
 import InputArea from "./InputArea";
@@ -176,6 +176,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
                     </Box>
                 </>
             )}
+            <Text color={'gray.400'} fontStyle={'italic'} textAlign={'center'} fontSize={'sm'} mt={3}>MindHush.ai is not a licensed professional. For urgent or serious concerns, please seek assistance from a qualified expert.</Text>
         </Flex>
     );
 };

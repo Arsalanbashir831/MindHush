@@ -191,6 +191,7 @@ const profile = useRecoilValue(userState)
           rounded="2xl"
           mt={10}
           onClick={() => navigate("/c/new", { state: "Hello, I need help!" })}
+          color={'white'}
         >
           <LuPlus style={{ marginRight: "2px" }} />
           Start New
@@ -223,7 +224,7 @@ const profile = useRecoilValue(userState)
                       }}
                     >
                       <BsChatSquareText />
-                      <Text textAlign={"left"} truncate flex="1" isTruncated>
+                      <Text color={'white'} textAlign={"left"} truncate flex="1" isTruncated>
                         {chat.name}
                       </Text>
                     </Button>

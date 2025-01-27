@@ -22,19 +22,29 @@ import { PRICING_PLANS } from "@/constants";
 import BlogsSection from "@/components/BlogsSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import Logo from "@/components/Logo";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { BiLogoTiktok } from "react-icons/bi";
 
 import FooterSection from "@/components/FooterSection";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/atom/state";
+import { useEffect } from "react";
 
 const LandingPage = () => {
   const isAuthenticated = useRecoilValue(authState)
-
-    console.log(isAuthenticated);
    
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const sectionId = location.hash.substring(1); // Remove the '#' character
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
   return (
     <Box
       bg="#040608"
@@ -271,9 +281,9 @@ const LandingPage = () => {
                 fontWeight="bold"
                 lineHeight="1.2"
               >
-                Top-tier talent at competitive <br />
+             Affordable Top-Tier  <br />
                 <Text as="span" color="teal.400">
-                  prices that set us apart.
+                Mental Health Companion.
                 </Text>
               </Text>
             </VStack>

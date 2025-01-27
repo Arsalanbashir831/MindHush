@@ -1,18 +1,15 @@
 import { HStack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { ProgressRoot, ProgressValueText, ProgressBar } from "./ui/progress";
+import { Progress } from "antd";
 
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom/state";
 
 export default function TokensBox() {
-	// const { profile } = useAuth();
-	const profile = useRecoilValue(userState)
+	const profile = useRecoilValue(userState);
 	const [cooldownTimeLeft, setCooldownTimeLeft] = useState(null);
 
-
 	useEffect(() => {
-		
 		if (profile?.reset_cooldown) {
 			const calculateTimeLeft = () => {
 				const now = new Date();
@@ -41,8 +38,11 @@ export default function TokensBox() {
 			// Cleanup on component unmount
 			return () => clearInterval(timer);
 		}
-	
-	}, [profile?.reset_cooldown ]);
+	}, [profile?.reset_cooldown]);
+
+	const creditsUsed = profile?.credits_used_today || 0; // Default to 0
+	const dailyLimit = profile?.daily_limit || 1; // Avoid division by zero
+	const percent = Math.min((creditsUsed / dailyLimit) * 100, 100); // Ensure it's max 100%
 
 	return (
 		<>
@@ -66,42 +66,26 @@ export default function TokensBox() {
 							<VStack alignItems="flex-start" w="100%" mb={2}>
 								<HStack>
 									<Text fontSize="xs" fontWeight="bold">
-										{profile?.credits_used_today}
+										{creditsUsed}
 									</Text>
 									<Text fontSize="xs">Tokens Used</Text>
 								</HStack>
 
 								<HStack>
 									<Text fontSize="xs" fontWeight="bold">
-										{profile?.daily_limit - profile?.credits_used_today > 0
-											? profile?.daily_limit - profile?.credits_used_today
-											: 0}
+										{dailyLimit - creditsUsed > 0 ? dailyLimit - creditsUsed : 0}
 									</Text>
 									<Text fontSize="xs">Tokens Left</Text>
 								</HStack>
 							</VStack>
 
-							<ProgressRoot
-								colorPalette="teal"
-								defaultValue={
-									(profile?.credits_used_today / profile?.daily_limit) * 100 < 100
-										? (profile?.credits_used_today / profile?.daily_limit) * 100
-										: 100
-								}
-								maxW="sm"
-								size="xs"
-								w="100%"
-							>
-								<HStack>
-									<ProgressValueText>
-										{(profile?.credits_used_today / profile?.daily_limit) * 100 < 100
-											? (profile?.credits_used_today / profile?.daily_limit) * 100
-											: 100}
-										%
-									</ProgressValueText>
-									<ProgressBar rounded="full" />
-								</HStack>
-							</ProgressRoot>
+							{/* Ant Design Progress Bar */}
+							<Progress  
+								percent={percent}
+								showInfo={false}
+								strokeColor="#B55CFF"
+								trailColor="#D1D5DB"
+							/>
 						</>
 					)}
 				</VStack>

@@ -16,18 +16,36 @@ const testimonials = [
 	{
 		id: 1,
 		quote:
-			"I never thought an AI could understand me so well. It's been a game-changer for my mental health. This platform has given me the strength and tools to face my challenges head-on.",
-		author: "Christian Yaworsky",
-		role: "User",
+			"It’s affordable, easy to use, and genuinely helpful. I recommend it to anyone struggling",
+		author: "Bruce",
+		role: "Professional",
 		videoUrl: "/path-to-video-1.mp4",
 		imgUrl: "/testimonials/testimonial-1.jpg",
 	},
 	{
 		id: 2,
 		quote:
-			"This platform has completely changed how I approach my goals. The personalized suggestions are spot-on!",
-		author: "Alex Johnson",
-		role: "Professional",
+			"MindHush taught me how to handle my stress better and even set boundaries in relationships.",
+		author: "Andrew",
+		role: "User",
+		videoUrl: "/path-to-video-2.mp4",
+		imgUrl: "/testimonials/testimonial-2.jpg",
+	},
+	{
+		id: 3,
+		quote:
+			"I never thought AI could be so helpful with emotional support. Aira is amazing!",
+		author: "Fatima",
+		role: "User",
+		videoUrl: "/path-to-video-2.mp4",
+		imgUrl: "/testimonials/testimonial-2.jpg",
+	},
+	{
+		id: 4,
+		quote:
+			"Aira helped me look at my emotions differently and gave me clarity.",
+		author: "Sarah",
+		role: "User",
 		videoUrl: "/path-to-video-2.mp4",
 		imgUrl: "/testimonials/testimonial-2.jpg",
 	},

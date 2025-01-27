@@ -55,7 +55,7 @@ const BlogPost = () => {
             onClick={() => navigate("/")}
             icon={<FaCaretLeft color="white" />}
           > BACK</IconButton>
-		 <Button onClick={()=>window.location.href='/c/new'} bg={'purple.600'} color={'white'}> Chat with Aira</Button>
+		 <Button onClick={()=>window.location.href='/c/new'} bg={'teal.600'} color={'white'}> Chat with Aira</Button>
         </Flex>
 
       {/* Main Container */}

@@ -83,7 +83,7 @@ export default function FeaturesSection() {
 						lineHeight='1.2'>
 						Why Us? <br />
 						<Text as='span' color='teal.400'>
-							Through your AI Companion
+						Our AI Companion Provides
 						</Text>
 					</Text>
 				</VStack>
