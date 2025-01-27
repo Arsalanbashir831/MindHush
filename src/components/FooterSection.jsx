@@ -9,6 +9,7 @@ import {
   IconButton,
   Heading,
   Image,
+  Link,
 } from "@chakra-ui/react";
 import { BiLogoTiktok } from "react-icons/bi";
 import Logo from "./Logo";
@@ -82,6 +83,9 @@ const FooterSection = () => {
                   Pricing
                 </Text>
               </RouterLink>
+            
+      
+      
             </HStack>
 
             {/* Contact Section */}
@@ -91,11 +95,16 @@ const FooterSection = () => {
                   Contact Us
                 </Heading>
                 <Text color="gray.400">hello@mindhush.ai</Text>
+                <HStack spacing={2} mt={2}>
+                <Link href="/terms" color="gray.400" _hover={{ color: "white" }} fontSize={{ base: "sm", md: "md" }}>Terms and Conditions</Link>
+                <Link href="/privacy-policy" color="gray.400" _hover={{ color: "white" }} fontSize={{ base: "sm", md: "md" }}>Privacy Policy</Link>
+                </HStack>
+               
               </Box>
             </VStack>
           </Box>
         </Grid>
-
+      
         {/* Copyright */}
         <VStack alignItems="center" justifyContent="center" gap={0} color="#8F9FA3" fontSize="sm" mt={16}>
           <Text>© {new Date().getFullYear()} — Copyright</Text>

@@ -1,97 +1,90 @@
 import React from "react";
-import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack, Link } from "@chakra-ui/react";
 
 const TermsCondition = () => {
 	return (
-		<Container maxW="container.md" py={10} bg="gray.900"  color="gray.300">
-			<VStack spacing={6} align="start" >
+		<Container maxW="container.md" py={10} bg="gray.900" color="gray.300">
+			<VStack spacing={6} align="start">
 				<Heading size="xl" color="purple.300">
-					Terms and Conditions
+					Terms and Services
 				</Heading>
 
 				<Text fontSize="md">
-					Welcome to <b>MindHush</b>. These Terms and Conditions outline the rules and regulations for using our application. 
-					By accessing or using MindHush, you agree to be bound by these terms. If you do not agree, please do not use our services.
+					Effective Date: 1 February 2025
+				</Text>
+
+				<Text fontSize="md">
+					Welcome to MindHush.ai, an AI-powered mental health support tool. These Terms and Services ("Terms") govern your use of our chatbot and related services ("Services"). By using the Services, you agree to these Terms. If you do not agree, please discontinue using the Services immediately.
 				</Text>
 
 				<Box>
 					<Heading size="md" color="purple.300">
-						1. Acceptance of Terms
+						1. Disclaimer of Professional Advice
 					</Heading>
-					<Text fontSize="md">
-						By creating an account or using MindHush, you acknowledge that you have read, understood, and agree to comply with these terms.
+					<Text fontSize="md" mt={2}>
+						1.1. Not a Substitute for Professional Help: The Services are designed for informational and support purposes only and do not constitute professional medical, psychological, or therapeutic advice. Always consult a licensed healthcare professional for any mental health or medical concerns.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						1.2. Emergency Situations: The Services are not suitable for crisis or emergency situations. If you are experiencing an emergency, please contact local emergency services or a crisis hotline immediately.
 					</Text>
 				</Box>
 
 				<Box>
 					<Heading size="md" color="purple.300">
-						2. User Responsibilities
+						2. User Eligibility
 					</Heading>
-					<Text fontSize="md">
-						You agree to use MindHush responsibly and legally. You must not misuse, abuse, or attempt to exploit our services for unlawful purposes.
+					<Text fontSize="md" mt={2}>
+						2.1. Age Requirement: You must be at least 18 years old or have the consent of a parent or guardian to use the Services.
 					</Text>
-				</Box>
-
-				{/* <Box>
-					<Heading size="md" color="purple.300">
-						3. Privacy Policy
-					</Heading>
-					<Text fontSize="md">
-						We are committed to protecting your privacy. Please read our{" "}
-						<a href="/privacy-policy" style={{ color: "#D6BCFA" }} target="_blank" rel="noopener noreferrer">
-							Privacy Policy
-						</a>{" "}
-						to understand how we handle your data.
-					</Text>
-				</Box> */}
-
-				<Box>
-					<Heading size="md" color="purple.300">
-						4. Account Security
-					</Heading>
-					<Text fontSize="md">
-						You are responsible for maintaining the confidentiality of your account credentials. Any unauthorized use of your account must be reported to us immediately.
+					<Text fontSize="md" mt={2}>
+						2.2. Location Restrictions: Use of the Services may be restricted in some jurisdictions. It is your responsibility to ensure compliance with local laws.
 					</Text>
 				</Box>
 
 				<Box>
 					<Heading size="md" color="purple.300">
-						5. Prohibited Activities
+						3. Compliance with Privacy Laws
 					</Heading>
-					<Text fontSize="md">
-						Users must not engage in activities such as hacking, spamming, spreading malware, or any activity that disrupts the normal functioning of MindHush.
+					<Text fontSize="md" mt={2}>
+						3.1. Global Privacy Compliance: The Services are designed to comply with applicable global privacy laws to the extent possible, including GDPR, CCPA, PDPA, and similar laws.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						3.2. Regional Restrictions: Certain features or data processing activities may not be available in all countries due to local regulatory requirements. Users should review local laws before using the Services.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						3.3. Data Security: While we implement reasonable security measures to protect your data, we cannot guarantee absolute security. Use the Services at your own risk.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						3.4. User Consent: By using the Services, you consent to the collection, processing, and storage of your data as outlined in our Privacy Policy.
 					</Text>
 				</Box>
 
 				<Box>
 					<Heading size="md" color="purple.300">
-						6. Termination of Services
+						4. Limitation of Liability
 					</Heading>
-					<Text fontSize="md">
-						We reserve the right to suspend or terminate your access to MindHush at any time if you violate these terms.
+					<Text fontSize="md" mt={2}>
+						4.1. No Warranty: The Services are provided "as is" without any warranties, express or implied. We do not guarantee the accuracy, reliability, or suitability of the information provided.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						4.2. Liability Cap: To the maximum extent permitted by law, MindHush.ai shall not be liable for any direct, indirect, incidental, or consequential damages arising from your use of the Services.
+					</Text>
+					<Text fontSize="md" mt={2}>
+						4.3. Indemnity: You agree to indemnify and hold harmless MindHush.ai and its employees from any claims, damages, or expenses arising from your use of the Services or violation of these Terms.
 					</Text>
 				</Box>
 
 				<Box>
 					<Heading size="md" color="purple.300">
-						7. Changes to Terms
+						5. Contact Information
 					</Heading>
-					<Text fontSize="md">
-						We may update these Terms and Conditions from time to time. Continued use of MindHush means you accept the revised terms.
-					</Text>
-				</Box>
-
-				<Box>
-					<Heading size="md" color="purple.300">
-						8. Contact Us
-					</Heading>
-					<Text fontSize="md">
-						If you have any questions about these terms, please contact us at <b>support@mindhush.com</b>.
+					<Text fontSize="md" mt={2}>
+						If you have any questions about these Terms, please contact us at <b>contact@mindhush.ai</b>.
 					</Text>
 				</Box>
 
 				<Text fontSize="sm" color="gray.500">
-					Last updated: January 2025
+					Last updated: 1 February 2025
 				</Text>
 			</VStack>
 		</Container>
