@@ -49,7 +49,7 @@ const App = () => {
 	return (
 		<Flex direction='column' height='100vh' overflow='hidden'>
 			{/* <Header /> */}
-			<Box as='main' flex='1' overflow='hidden'>
+			<Box as='main'  overflow='auto'>
 				<Routes>
 					<Route path='/' element={<LandingPage />} />
 					<Route path='/terms' element={<TermsCondition />} />

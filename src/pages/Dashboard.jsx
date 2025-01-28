@@ -123,8 +123,8 @@ const [refresh , setRefresh] = useState(false)
 	const categorizedChats = categorizeChats(chats);
 
 	return (
-		<Box minH='100vh' color='white'>
-			<HStack w='full' spacing={0}>
+		<Box  minH='100vh' color='white'>
+			<HStack  w='full' spacing={0}>
 				{!isDrawer && (
 					<Sidebar refresh={refresh} setRefresh={setRefresh}
 						categorizedChats={categorizedChats}
@@ -133,7 +133,7 @@ const [refresh , setRefresh] = useState(false)
 					/>
 				)}
 
-				<VStack w='full' minH='100vh' gap={8} p={4}>
+				<VStack  w='full' minH='100vh' gap={0} mt={0} p={4}>
 					<Flex
 						justifyContent={{ base: "space-between", md: "flex-end" }}
 						w='full'>

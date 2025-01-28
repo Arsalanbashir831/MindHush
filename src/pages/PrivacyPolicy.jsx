@@ -1,9 +1,13 @@
 import React from "react";
 import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
+import FooterSection from "@/components/FooterSection";
 
 const PrivacyPolicy = () => {
 	return (
-		<Container maxW="container.md" py={10} bg="gray.900" color="gray.300">
+		<>
+
+		
+		<Container maxW="container.md" py={10}  color="gray.300">
 			<VStack spacing={6} align="start">
 				<Heading size="xl" color="purple.300">
 					Privacy Policy
@@ -124,6 +128,8 @@ const PrivacyPolicy = () => {
 				</Text>
 			</VStack>
 		</Container>
+		<FooterSection/>
+		</>
 	);
 };
 

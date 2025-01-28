@@ -32,9 +32,7 @@ export const BlogCard = ({ image, title, number }) => {
 				align="flex-start"
 				spacing={1}
 			>
-				<Text color="white" fontSize={{ base: "sm", md: "lg" }}>
-					Blog {number}
-				</Text>
+				
 				<Text color="white" fontSize={{ base: "md", md: "lg" }} noOfLines={2}>
 					{title}
 				</Text>

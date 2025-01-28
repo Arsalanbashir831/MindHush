@@ -267,9 +267,13 @@ const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 								{/* Terms and Conditions */}
 								<Text fontSize='sm' mt={4}>
 									By signing in you agree to our{" "}
-									<Text as='span' color='purple.400'>
-										Terms and Conditions
-									</Text>
+									<a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: "#805AD5" }}>
+		Terms and Conditions
+	</a>
+									 &  
+									 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: "#805AD5" }}>
+		Privacy Policy
+	</a>
 								</Text>
 							</VStack>
 						</VStack>

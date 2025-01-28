@@ -174,15 +174,16 @@ const profile = useRecoilValue(userState)
 
   return (
     <Box
-      alignSelf="flex-start"
+      alignSelf="center"
       h="100vh"
       w={{ base: "100%", md: "350px" }}
       bg="linear-gradient(to right, #222529, #282A2F)"
       p={4}
+     
       display="flex"
       flexDirection="column"
     >
-      <VStack align="stretch" spacing={4} flexShrink={0}>
+      <VStack align="stretch"  pt={4} spacing={4} flexShrink={0}>
         <Logo />
 
         <Button

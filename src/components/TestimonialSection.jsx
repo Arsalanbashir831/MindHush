@@ -95,7 +95,7 @@ const TestimonialSlider = () => {
 						as='span'
 						bg='linear-gradient(90deg, #9E3C90 0%, #008080 100%)'
 						bgClip='text'>
-						clients say
+						users say
 					</Text>
 				</Heading>
 
