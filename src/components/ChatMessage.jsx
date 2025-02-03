@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Box, HStack, Image } from "@chakra-ui/react";
+import { Box, HStack, Image, useBreakpointValue } from "@chakra-ui/react";
 import Lottie from "lottie-react";
 import ReactMarkdown from "react-markdown";
 
 const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
     const [animationData, setAnimationData] = useState(null);
-
+    const maxWidth = useBreakpointValue({ base: "80%", sm: "70%", md: "60%", lg: "50%" });
     // ✅ Fetch Lottie JSON from `public/` when the component mounts
     useEffect(() => {
         fetch("/typing_animation.json")
@@ -38,7 +38,7 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
 
             {/* AI/User Message Bubble */}
             <Box
-                maxW="40%"
+                maxW={maxWidth}
                 color="white"
                 px={4}
                 py={3}
