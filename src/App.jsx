@@ -73,14 +73,14 @@ const App = () => {
 						} />
 				
 					<Route path='/login' element={
-						<GoogleOAuthProvider clientId="73746778952-bssa8fhr60ar7kh05ghod56nv4qeuvdi.apps.googleusercontent.com">
+						<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
 						<SignInPage />
 						</GoogleOAuthProvider>
 						
 						} />
 					
 					<Route path='/signup' element={<>
-					<GoogleOAuthProvider clientId="73746778952-bssa8fhr60ar7kh05ghod56nv4qeuvdi.apps.googleusercontent.com">
+					<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
 					<SignUpPage />
 					</GoogleOAuthProvider>
 					
