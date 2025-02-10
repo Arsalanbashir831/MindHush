@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, SimpleGrid, VStack, Badge, Image, Spinner } from "@chakra-ui/react";
-import { useNavigate } from "react-router";
+import { Box, Text, SimpleGrid, VStack, Badge, Image, Spinner, Flex } from "@chakra-ui/react";
+import { useNavigate } from "react-router"; // Fixed import
 import { apiCallerAuthPost } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
 import InputArea from "./InputArea";
@@ -38,35 +38,27 @@ export default function NewChat({ isDrawer }) {
     };
 
     const categories = [
-        { name: "Parenting", icon: "/icons/parenting_icon.svg", prompts: prompts.Parenting , label : "Parenting"},
-        { name: "MentalHealth", icon: "/icons/mental_health_icon.svg", prompts: prompts.MentalHealth , label:'Mental Health' },
-        { name: "Financial", icon: "/icons/financial_icon.svg", prompts: prompts.Financial, label:'Financial' },
-        { name: "Identity", icon: "/icons/user_icon.svg", prompts: prompts.Identity , label:'Identity' }
+        { name: "Parenting", icon: "/icons/parenting_icon.svg", prompts: prompts.Parenting, label: "Parenting" },
+        { name: "MentalHealth", icon: "/icons/mental_health_icon.svg", prompts: prompts.MentalHealth, label: "Mental Health" },
+        { name: "Financial", icon: "/icons/financial_icon.svg", prompts: prompts.Financial, label: "Financial" },
+        { name: "Identity", icon: "/icons/user_icon.svg", prompts: prompts.Identity, label: "Identity" }
     ];
 
-    // Store a random index for each category in state
     const [randomIndexes, setRandomIndexes] = useState({});
 
-    // Function to get a new random index for a category
-    const getRandomIndex = (categoryName, length) => {
-        return Math.floor(Math.random() * length);
-    };
-
-    // Initialize random indexes for all categories on component mount
     useEffect(() => {
         const initialIndexes = {};
         categories.forEach((category) => {
-            initialIndexes[category.name] = getRandomIndex(category.name, category.prompts.length);
+            initialIndexes[category.name] = Math.floor(Math.random() * category.prompts.length);
         });
         setRandomIndexes(initialIndexes);
     }, []);
 
-    // Function to get a new random prompt dynamically
     const getRandomPrompt = (categoryName) => {
         const categoryPrompts = prompts[categoryName];
         if (!categoryPrompts || categoryPrompts.length === 0) return "How can I help you today?";
 
-        const newIndex = getRandomIndex(categoryName, categoryPrompts.length);
+        const newIndex = Math.floor(Math.random() * categoryPrompts.length);
         setRandomIndexes((prevIndexes) => ({
             ...prevIndexes,
             [categoryName]: newIndex
@@ -100,8 +92,7 @@ export default function NewChat({ isDrawer }) {
                 );
 
                 if (response.status === 201) {
-                    window.location.href=`/c/${newChatId}`
-                    // navigate(`/c/${newChatId}`);
+                    window.location.href = `/c/${newChatId}`;
                 } else {
                     alert("Your Daily Limit Exceeds. Please get a subscription for unlimited use.");
                     navigate("/pricing-plans");
@@ -118,27 +109,22 @@ export default function NewChat({ isDrawer }) {
     };
 
     return (
-        <VStack w="full" my="auto">
+        <VStack w="full" my="auto" px={{ base: 4, md: 8 }} spacing={6}>
             {isCreating ? (
                 <Spinner size="lg" color="teal.500" />
             ) : (
                 <>
-                    <Text fontSize="3xl" fontWeight="light" textAlign="center" lineHeight={1.2}>
-                        How can I help you <br /> today?
+                    <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="light" textAlign="center">
+                        How can I help you today?
                     </Text>
 
                     <InputArea onSubmitClick={handlePromptSubmit} />
 
-                    <SimpleGrid
-                        columns={{ base: 2, md: 3, lg: 5 }}
-                        gapY={6}
-                        gapX={4}
-                        mt={2}
-                        pb={2}
-                        maxW={{ base: "xs", sm: "sm", md: "3xl" }}
-                        display={{ base: "flex", md: "grid" }}
-                        flexWrap="nowrap"
-                        overflowX={{ base: "auto", md: "unset" }}
+                    <Flex
+                        w="full"
+                        overflowX={{ base: "auto", md: "hidden" }}
+                        flexWrap={{ base: "nowrap", md: "wrap" }}
+                        justify={{ base: "flex-start", md: "center" }}
                         scrollSnapType="x mandatory"
                         css={{
                             "&::-webkit-scrollbar": {
@@ -153,12 +139,14 @@ export default function NewChat({ isDrawer }) {
                         {categories.map((category) => (
                             <Box
                                 key={category.name}
-                                minW={{ base: "30%", md: "unset" }}
-                                scrollSnapAlign="start"
+                                minW={{ base: "50%", sm: "30%", md: "100px" }}
+                                maxW="200px"
+                                flexShrink={0}
+                                p={2}
                                 onClick={() => handlePromptSubmit(getRandomPrompt(category.name))}
                                 cursor="pointer"
                             >
-                                <VStack gapY={2}>
+                                <VStack gap={2} align="center">
                                     <Box
                                         bg="gray.800"
                                         p={4}
@@ -190,7 +178,7 @@ export default function NewChat({ isDrawer }) {
                                                 </Box>
                                             </Badge>
                                         )}
-                                        <Image src={category.icon} alt={category.name} w={5} h={5} />
+                                        <Image src={category.icon} alt={category.name} w={6} h={6} />
                                     </Box>
                                     <Text fontSize="sm" textAlign="center">
                                         {category.label}
@@ -198,7 +186,7 @@ export default function NewChat({ isDrawer }) {
                                 </VStack>
                             </Box>
                         ))}
-                    </SimpleGrid>
+                    </Flex>
                 </>
             )}
         </VStack>
