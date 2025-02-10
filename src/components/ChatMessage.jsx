@@ -34,8 +34,8 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
             {!isUser && (
                 <Image
                     src="/gradient_logo.png"
-                    width={'30px'}
-                    height={'55px'}
+                    width={'40px'}
+                    height={'65px'}
                     alt="AI avatar"
                     //  boxSize="44px"
                     borderRadius="full"
