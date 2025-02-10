@@ -31,10 +31,10 @@ export default function AuthButtons() {
 console.log('auth btns',profile);
 
 	return (
-		<HStack>
+		<HStack mb={3}>
 			{isAuthenticated ? (
 				<>
-					<Avatar name={profile?.first_name + " " + profile?.last_name} src='/user_avatar.png'>
+					<Avatar name={profile?.first_name + " " + profile?.last_name} src='/profile_img_improve.png'>
 						<Float placement='bottom-end' offsetX='2' offsetY='1'>
 							<Circle
 								bg='green.500'

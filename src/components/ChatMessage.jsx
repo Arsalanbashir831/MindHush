@@ -5,7 +5,12 @@ import ReactMarkdown from "react-markdown";
 
 const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
     const [animationData, setAnimationData] = useState(null);
-    const maxWidth = useBreakpointValue({ base: "80%", sm: "70%", md: "60%", lg: "50%" });
+
+    // ✅ Responsive styling
+    const maxWidth = useBreakpointValue({ base: "85%", sm: "75%", md: "60%", lg: "50%" });
+    const fontSize = useBreakpointValue({ base: "14px", sm: "15px", md: "16px", lg: "17px" });
+    const paddingX = useBreakpointValue({ base: 3, sm: 4 }); // Adjust padding for small screens
+
     // ✅ Fetch Lottie JSON from `public/` when the component mounts
     useEffect(() => {
         fetch("/typing_animation.json")
@@ -28,11 +33,13 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
             {/* AI Avatar */}
             {!isUser && (
                 <Image
-                    src="/logo2.jpg"
+                    src="/mindhush_logo_new_improved.png"
+                    width={'35px'}
+                    height={'39px'}
                     alt="AI avatar"
-                    boxSize="40px"
+                    // boxSize="44px"
                     borderRadius="full"
-                    ml={2}
+                    ml={0}
                 />
             )}
 
@@ -40,13 +47,14 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
             <Box
                 maxW={maxWidth}
                 color="white"
-                px={4}
+                px={paddingX}
                 py={3}
                 bg={isUser ? "#7A50764D" : "#FFFFFF1A"}
                 borderRadius="2xl"
                 position="relative"
                 minH="40px"
                 textAlign="left"
+                fontSize={fontSize} // ✅ Dynamically adjust font size
             >
                 {isAIResponseLoading && !isUser ? (
                     animationData ? (
@@ -62,7 +70,7 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
             {/* User Avatar */}
             {isUser && (
                 <Image
-                    src="/user_avatar.png"
+                    src="/profile_img_improve.png"
                     alt="User avatar"
                     boxSize="40px"
                     borderRadius="full"

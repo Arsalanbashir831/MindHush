@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { VStack, Flex, Box, Spinner, Center,Text } from "@chakra-ui/react";
+import { VStack, Flex, Box, Spinner, Center, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import ChatMessage from "./ChatMessage";
 import InputArea from "./InputArea";
@@ -9,26 +9,29 @@ import { useRecoilState } from "recoil";
 import { refreshState } from "@/atom/state";
 
 const ChattingArea = () => {
-    const { id } = useParams(); 
-    const { state } = useLocation(); 
+    const { id } = useParams();
+    const { state } = useLocation();
     const navigate = useNavigate();
-    const { token  } = useAuth(); 
-
+    const { token } = useAuth();
     const [messages, setMessages] = useState([]);
     const [chatId, setChatId] = useState(null);
     const [isCreatingChat, setIsCreatingChat] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isAIResponseLoading, setIsAIResponseLoading] = useState(false);
-    const lastMessageRef = useRef(null); // ✅ Reference to last message
-const [refresh , setRefresh] = useRecoilState(refreshState)
-    // ✅ Auto-scroll to the last message
+    const lastMessageRef = useRef(null);
+    const [refresh, setRefresh] = useRecoilState(refreshState);
+
+    // Responsive height for chat container
+    const chatHeight = useBreakpointValue({ base: "82vh", md: "90vh" });
+
+    // Auto-scroll to last message
     const scrollToBottom = () => {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]); // ✅ Scrolls on new messages
+    }, [messages]);
 
     // Fetch chat messages
     const fetchMessages = async (chatId) => {
@@ -74,7 +77,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
                             { content: state },
                             token
                         );
-                 
+
                         setMessages([
                             { message: addMessageResponse.data.content, isUser: true },
                             { message: addMessageResponse.data.ai_response, isUser: false },
@@ -103,7 +106,6 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
 
         setMessages((prev) => [...prev, { message: newMessage, isUser: true }]);
 
-        // Add a dummy AI message for loading animation
         const dummyId = `dummy-${Date.now()}`;
         setMessages((prev) => [
             ...prev,
@@ -119,9 +121,9 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
             );
 
             if (addMessageResponse.status === 201) {
-                setRefresh(!refresh)
+                setRefresh(!refresh);
                 setMessages((prev) =>
-                    prev.map((msg, index) =>
+                    prev.map((msg) =>
                         msg.id === dummyId
                             ? { message: addMessageResponse.data.ai_response, isUser: false }
                             : msg
@@ -130,7 +132,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
                 setIsAIResponseLoading(false);
             } else {
                 setMessages((prev) =>
-                    prev.map((msg, index) =>
+                    prev.map((msg) =>
                         msg.id === dummyId
                             ? { message: "You have exceeded your daily credits. Try again tomorrow.", isUser: false }
                             : msg
@@ -141,7 +143,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
         } catch (error) {
             console.error("Error adding message to chat:", error);
             setMessages((prev) =>
-                prev.map((msg, index) =>
+                prev.map((msg) =>
                     msg.id === dummyId
                         ? { message: "Something went wrong. Please try again.", isUser: false }
                         : msg
@@ -152,31 +154,58 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
     };
 
     return (
-        <Flex flexDirection="column" height="90vh" justifyContent={'end'} w="full" color="white" p={4}>
+        <Flex
+            flexDirection="column"
+            height={chatHeight}
+            justifyContent="end"
+            w="full"
+
+             h={'90vh'}
+            color="white"
+            px={{ base: 2, md: 4 }} // Less padding on mobile
+            // pb={{ base: 2, md: 4 }} // Adjust bottom padding
+        >
             {isLoading ? (
                 <Center h="100%">
                     <Spinner size="xl" color="teal.500" />
                 </Center>
             ) : (
                 <>
-                    <VStack spacing={4} overflowY="auto" w="full" h="100%" pr={2} pb={5}>
+                    <VStack
+                        spacing={3}
+                        overflowY="auto"
+                        w="full"
+                        h="100%"
+                        pr={{ base: 1, md: 2 }} // Smaller padding for mobile
+                        pb={4}
+                    >
                         {messages.map((msg, index) => (
                             <ChatMessage
                                 key={index}
                                 message={msg.message}
                                 isUser={msg.isUser}
                                 isAIResponseLoading={msg.isAIResponseLoading || false}
-                                messageRef={index === messages.length - 1 ? lastMessageRef : null} // ✅ Assign last message ref
+                                messageRef={index === messages.length - 1 ? lastMessageRef : null}
                             />
                         ))}
                     </VStack>
 
-                    <Box w="full" pt={0} zIndex={10}>
+                    <Box w="full" pt={{ base: 1, md: 2 }} zIndex={10}>
                         <InputArea onSubmitClick={onSubmitClick} />
                     </Box>
                 </>
             )}
-            <Text color={'gray.400'} fontStyle={'italic'} textAlign={'center'} fontSize={'sm'} mt={3}>MindHush.ai is not a licensed professional. For urgent or serious concerns, please seek assistance from a qualified expert.</Text>
+
+            {/* Disclaimer Message */}
+            <Text
+                color="gray.400"
+                fontStyle="italic"
+                textAlign="center"
+                fontSize={{ base: "xs", md: "sm" }} // Smaller text on mobile
+                mt={2}
+            >
+                MindHush.ai is not a licensed professional. For urgent or serious concerns, please seek assistance from a qualified expert.
+            </Text>
         </Flex>
     );
 };

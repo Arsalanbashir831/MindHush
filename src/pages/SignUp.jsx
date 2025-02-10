@@ -216,7 +216,7 @@ const SignUpPage = () => {
                   >
                     Terms and Conditions
                   </a>
-                  &
+                  <br/>
                   <a
                     href="/privacy-policy"
                     target="_blank"

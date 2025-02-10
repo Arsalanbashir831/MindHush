@@ -270,7 +270,7 @@ const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 									<a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: "#805AD5" }}>
 		Terms and Conditions
 	</a>
-									 &  
+									<br/>
 									 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: "#805AD5" }}>
 		Privacy Policy
 	</a>

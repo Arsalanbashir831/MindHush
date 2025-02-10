@@ -55,7 +55,7 @@ const UserProfileModal = () => {
 								overflow='hidden'
 								w='150px'
 								h='150px'>
-								<Image src='/user_avatar.png' alt='Profile' w='full' />
+								<Image src='/profile_img_improve.png' alt='Profile' w='full' />
 							</Box>
 							<VStack alignItems='flex-start'>
 								<Text
