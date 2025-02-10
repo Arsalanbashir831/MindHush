@@ -33,11 +33,11 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
             {/* AI Avatar */}
             {!isUser && (
                 <Image
-                    src="/mindhush_logo_new_improved.png"
-                    width={'35px'}
-                    height={'39px'}
+                    src="/gradient_logo.png"
+                    width={'30px'}
+                    height={'55px'}
                     alt="AI avatar"
-                    // boxSize="44px"
+                    //  boxSize="44px"
                     borderRadius="full"
                     ml={0}
                 />
