@@ -19,76 +19,85 @@ import { apiCallerAuthGet } from "./api/ApiCaller";
 import Feedback from "./pages/Feedback";
 import BlogList from "./pages/BlogList";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+// import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const App = () => {
-	const [profile , setProfile] = useRecoilState(userState)
-	const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
-	useEffect(()=>{
+	const [profile, setProfile] = useRecoilState(userState);
+	const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState);
+	useEffect(() => {
 		const updateProfile = () => {
-			const token = localStorage.getItem('authToken')
-			if(token){
-				apiCallerAuthGet("/api/users/profile/", token).then((res) => {
-					if (res.status === 200) {
-						setProfile(res.data);
-						setIsAuthenticated(true)
-						
-					}
-				}).catch((err) => {
-					console.log(err);
-				})
-			}else{
-				setProfile(null)
+			const token = localStorage.getItem("authToken");
+			if (token) {
+				apiCallerAuthGet("/api/users/profile/", token)
+					.then((res) => {
+						if (res.status === 200) {
+							setProfile(res.data);
+							setIsAuthenticated(true);
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			} else {
+				setProfile(null);
 			}
-			
-		}
-		updateProfile()
-	},[])
-	
-	
-	return (
-		<Flex direction='column' height='100vh' overflow='hidden'>
-			{/* <Header /> */}
-			<Box as='main'  overflow='auto'>
-				<Routes>
-					<Route path='/' element={<LandingPage />} />
-					<Route path='/terms' element={<TermsCondition />} />
-					<Route path='/privacy-policy' element={<PrivacyPolicy />} />
-					<Route path='/emergency' element={<Emergency />} />
-					<Route path='/forget-password' element={<ForgetPassword />} />
-					<Route path='/otp-verification' element={<OtpVerification />} />
-					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/feedback' element={<Feedback />} />
-					
-				
-					<Route path='/c/new' element={
-						<AuthProvider>
-						<Dashboard isNewChart={true} />
-						</AuthProvider>
-						} />
-					<Route path='/c/:id' element={
-						<AuthProvider>
-						<Dashboard />
-						</AuthProvider>
-						} />
-				
-					<Route path='/login' element={
-						<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
-						<SignInPage />
-						</GoogleOAuthProvider>
-						
-						} />
-					
-					<Route path='/signup' element={<>
-					<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
-					<SignUpPage />
-					</GoogleOAuthProvider>
-					
+		};
+		updateProfile();
+	}, []);
 
-					</>} />
-					<Route path='/pricing-plans' element={<PricingPlans />} />
-					<Route path='/blogs-list' element={<BlogList />} />
-					<Route path='/blogs/:id' element={<BlogPost />} />
+	return (
+		<Flex direction="column" height="100vh" overflow="hidden">
+			{/* <Header /> */}
+			<Box as="main" overflow="auto">
+				<Routes>
+					<Route path="/" element={<LandingPage />} />
+					<Route path="/terms" element={<TermsCondition />} />
+					{/* <Route path='/privacy-policy' element={<PrivacyPolicy />} /> */}
+					<Route path="/emergency" element={<Emergency />} />
+					<Route path="/forget-password" element={<ForgetPassword />} />
+					<Route path="/otp-verification" element={<OtpVerification />} />
+					<Route path="/reset-password" element={<ResetPassword />} />
+					<Route path="/feedback" element={<Feedback />} />
+
+					<Route
+						path="/c/new"
+						element={
+							<AuthProvider>
+								<Dashboard isNewChart={true} />
+							</AuthProvider>
+						}
+					/>
+					<Route
+						path="/c/:id"
+						element={
+							<AuthProvider>
+								<Dashboard />
+							</AuthProvider>
+						}
+					/>
+
+					<Route
+						path="/login"
+						element={
+							<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
+								<SignInPage />
+							</GoogleOAuthProvider>
+						}
+					/>
+
+					<Route
+						path="/signup"
+						element={
+							<>
+								<GoogleOAuthProvider clientId="73746778952-o30s5ivnkpq9hm6f8e5kqkod9pdksj0b.apps.googleusercontent.com">
+									<SignUpPage />
+								</GoogleOAuthProvider>
+							</>
+						}
+					/>
+					<Route path="/pricing-plans" element={<PricingPlans />} />
+					<Route path="/blogs-list" element={<BlogList />} />
+					<Route path="/blogs/:id" element={<BlogPost />} />
 				</Routes>
 			</Box>
 		</Flex>
