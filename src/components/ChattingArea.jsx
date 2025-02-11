@@ -31,7 +31,7 @@ const ChattingArea = () => {
 
     // Responsive height: Adjust chat container height dynamically
     const chatHeight = useBreakpointValue({
-        base: "calc(100vh - 160px)", // Adjust for mobile
+        base: "calc(100vh - 130px)", // Adjust for mobile
         md: "calc(100vh - 140px)",  // Adjust for tablets/desktops
     });
 
