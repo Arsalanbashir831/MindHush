@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, SimpleGrid, VStack, Badge, Image, Spinner, Flex } from "@chakra-ui/react";
-import { useNavigate } from "react-router"; // Fixed import
+import { Box, Text, VStack, Badge, Image, Spinner, Flex } from "@chakra-ui/react";
+import { useNavigate } from "react-router";
 import { apiCallerAuthPost } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
 import InputArea from "./InputArea";
@@ -109,86 +109,98 @@ export default function NewChat({ isDrawer }) {
     };
 
     return (
-        <VStack w="full" my="auto" px={{ base: 4, md: 8 }} spacing={6}>
-            {isCreating ? (
-                <Spinner size="lg" color="teal.500" />
-            ) : (
-                <>
-                    <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="light" textAlign="center">
-                        How can I help you today?
-                    </Text>
+        <Flex
+            minHeight="100vh"
+            align="center"
+            justify="center"
+            py={{ base: 6, md: 8 }}
+            px={{ base: 4, md: 8 }}
+           
+            w="full"
+        >
+            <VStack w="full" maxW="600px" spacing={6}>
+                {isCreating ? (
+                    <Spinner size="lg" color="teal.500" />
+                ) : (
+                    <>
+                        <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="light" textAlign="center" color="white">
+                            How can I help you today?
+                        </Text>
 
-                    <InputArea onSubmitClick={handlePromptSubmit} />
+                        <InputArea onSubmitClick={handlePromptSubmit} />
 
-                    <Flex
-                        w="full"
-                        overflowX={{ base: "auto", md: "hidden" }}
-                        flexWrap={{ base: "nowrap", md: "wrap" }}
-                        justify={{ base: "flex-start", md: "center" }}
-                        scrollSnapType="x mandatory"
-                        css={{
-                            "&::-webkit-scrollbar": {
-                                height: "4px"
-                            },
-                            "&::-webkit-scrollbar-thumb": {
-                                background: "#B55CFF",
-                                borderRadius: "10px"
-                            }
-                        }}
-                    >
-                        {categories.map((category) => (
-                            <Box
-                                key={category.name}
-                                minW={{ base: "50%", sm: "30%", md: "100px" }}
-                                maxW="200px"
-                                flexShrink={0}
-                                p={2}
-                                onClick={() => handlePromptSubmit(getRandomPrompt(category.name))}
-                                cursor="pointer"
-                            >
-                                <VStack gap={2} align="center">
-                                    <Box
-                                        bg="gray.800"
-                                        p={4}
-                                        borderRadius="xl"
-                                        border="1px solid #424242"
-                                        _hover={{ bg: "#1f1f1f" }}
-                                        position="relative"
-                                    >
-                                        {category.isPro && (
-                                            <Badge
-                                                position="absolute"
-                                                top={0}
-                                                left={0}
-                                                variant="solid"
-                                                bg="#424242"
-                                                fontSize="xx-small"
-                                                roundedBottomLeft={0}
-                                                roundedBottomRight="xl"
-                                                roundedTopLeft="xl"
-                                                roundedTopRight={0}
-                                            >
-                                                <Box
-                                                    display="inline-block"
-                                                    backgroundImage="linear-gradient(to right, #B55CFF, #5D8CFA)"
-                                                    backgroundClip="text"
-                                                    color="transparent"
+                        <Flex
+                            w="full"
+                            // overflowX="auto"
+                            flexWrap={{ base: "wrap", md: "nowrap" }}
+                            justify={{ base: "center", md: "center" }}
+                            scrollSnapType="x mandatory"
+                            gap={4}
+                            css={{
+                                "&::-webkit-scrollbar": {
+                                    height: "4px"
+                                },
+                                "&::-webkit-scrollbar-thumb": {
+                                    background: "#B55CFF",
+                                    borderRadius: "10px"
+                                }
+                            }}
+                        >
+                            {categories.map((category) => (
+                                <Box
+                                    key={category.name}
+                                    minW={{ base: "140px", sm: "160px", md: "120px" }}
+                                    maxW="200px"
+                                    flexShrink={0}
+                                    p={3}
+                                    onClick={() => handlePromptSubmit(getRandomPrompt(category.name))}
+                                    cursor="pointer"
+                                    textAlign="center"
+                                >
+                                    <VStack gap={2} align="center">
+                                        <Box
+                                            bg="gray.800"
+                                            p={4}
+                                            borderRadius="xl"
+                                            border="1px solid #424242"
+                                            _hover={{ bg: "#1f1f1f" }}
+                                            position="relative"
+                                        >
+                                            {category.isPro && (
+                                                <Badge
+                                                    position="absolute"
+                                                    top={0}
+                                                    left={0}
+                                                    variant="solid"
+                                                    bg="#424242"
+                                                    fontSize="xx-small"
+                                                    roundedBottomLeft={0}
+                                                    roundedBottomRight="xl"
+                                                    roundedTopLeft="xl"
+                                                    roundedTopRight={0}
                                                 >
-                                                    Pro
-                                                </Box>
-                                            </Badge>
-                                        )}
-                                        <Image src={category.icon} alt={category.name} w={6} h={6} />
-                                    </Box>
-                                    <Text fontSize="sm" textAlign="center">
-                                        {category.label}
-                                    </Text>
-                                </VStack>
-                            </Box>
-                        ))}
-                    </Flex>
-                </>
-            )}
-        </VStack>
+                                                    <Box
+                                                        display="inline-block"
+                                                        backgroundImage="linear-gradient(to right, #B55CFF, #5D8CFA)"
+                                                        backgroundClip="text"
+                                                        color="transparent"
+                                                    >
+                                                        Pro
+                                                    </Box>
+                                                </Badge>
+                                            )}
+                                            <Image src={category.icon} alt={category.name} w={8} h={8} />
+                                        </Box>
+                                        <Text fontSize="sm" textAlign="center" color="white">
+                                            {category.label}
+                                        </Text>
+                                    </VStack>
+                                </Box>
+                            ))}
+                        </Flex>
+                    </>
+                )}
+            </VStack>
+        </Flex>
     );
 }

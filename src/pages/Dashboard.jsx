@@ -123,7 +123,7 @@ const Dashboard = ({ isNewChart = false }) => {
 	const categorizedChats = categorizeChats(chats);
 
 	return (
-		<Box minH="100vh" color="white">
+		<Box minH="100vh" color="white" >
 			<HStack w="full" spacing={0}>
 				{!isDrawer && (
 					<Sidebar
@@ -135,7 +135,7 @@ const Dashboard = ({ isNewChart = false }) => {
 					/>
 				)}
 
-				<VStack
+				<VStack 
 					w="full"
 					maxH="100vh"
 					gap={0}
@@ -143,8 +143,10 @@ const Dashboard = ({ isNewChart = false }) => {
 					p={0}
 					pt={{ base: 2, md: 0 }}
 					boxSizing="border-box"
-					overflow="hidden">
-					<Flex
+					overflow={'hidden'}
+				
+					>
+					<Flex 
 						justifyContent={{ base: "space-between", md: "flex-end" }}
 						w="full"
 						px={{ base: 4, md: 0 }}>

@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { VStack, Flex, Box, Spinner, Center, Text, useBreakpointValue } from "@chakra-ui/react";
-import { useParams, useLocation, useNavigate } from "react-router";
+import {
+    VStack,
+    Flex,
+    Box,
+    Spinner,
+    Center,
+    Text,
+    useBreakpointValue,
+} from "@chakra-ui/react";
+import { useParams, useLocation, useNavigate } from "react-router"; // Fixed import
 import ChatMessage from "./ChatMessage";
 import InputArea from "./InputArea";
 import { apiCallerAuthPost, apiCallerAuthGet } from "@/api/ApiCaller";
@@ -21,8 +29,11 @@ const ChattingArea = () => {
     const lastMessageRef = useRef(null);
     const [refresh, setRefresh] = useRecoilState(refreshState);
 
-    // Responsive height for chat container
-    const chatHeight = useBreakpointValue({ base: "82vh", md: "90vh" });
+    // Responsive height: Adjust chat container height dynamically
+    const chatHeight = useBreakpointValue({
+        base: "calc(100vh - 160px)", // Adjust for mobile
+        md: "calc(100vh - 140px)",  // Adjust for tablets/desktops
+    });
 
     // Auto-scroll to last message
     const scrollToBottom = () => {
@@ -109,7 +120,7 @@ const ChattingArea = () => {
         const dummyId = `dummy-${Date.now()}`;
         setMessages((prev) => [
             ...prev,
-            { id: dummyId, message: "", isUser: false, isAIResponseLoading: true }
+            { id: dummyId, message: "", isUser: false, isAIResponseLoading: true },
         ]);
         setIsAIResponseLoading(true);
 
@@ -134,7 +145,11 @@ const ChattingArea = () => {
                 setMessages((prev) =>
                     prev.map((msg) =>
                         msg.id === dummyId
-                            ? { message: "You have exceeded your daily credits. Try again tomorrow.", isUser: false }
+                            ? {
+                                  message:
+                                      "You have exceeded your daily credits. Try again tomorrow.",
+                                  isUser: false,
+                              }
                             : msg
                     )
                 );
@@ -156,14 +171,12 @@ const ChattingArea = () => {
     return (
         <Flex
             flexDirection="column"
-            height={chatHeight}
-            justifyContent="end"
+            height="100vh"
             w="full"
-
-             h={'90vh'}
             color="white"
             px={{ base: 2, md: 4 }} // Less padding on mobile
-            // pb={{ base: 2, md: 4 }} // Adjust bottom padding
+             justifyContent={'flex-end'}
+             
         >
             {isLoading ? (
                 <Center h="100%">
@@ -171,11 +184,12 @@ const ChattingArea = () => {
                 </Center>
             ) : (
                 <>
+                    {/* Chat Messages - Scrollable */}
                     <VStack
                         spacing={3}
                         overflowY="auto"
                         w="full"
-                        h="100%"
+                        maxH={chatHeight} // Adjust dynamically for mobile
                         pr={{ base: 1, md: 2 }} // Smaller padding for mobile
                         pb={4}
                     >
@@ -190,7 +204,8 @@ const ChattingArea = () => {
                         ))}
                     </VStack>
 
-                    <Box w="full" pt={{ base: 1, md: 2 }} zIndex={10}>
+                    {/* Input Area - Always Fixed at Bottom */}
+                    <Box w="full" position="sticky" bottom="0" pt={2} pb={2} zIndex={10}>
                         <InputArea onSubmitClick={onSubmitClick} />
                     </Box>
                 </>
