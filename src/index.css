@@ -53,3 +53,68 @@ body {
   .dark-row:hover {
 	background-color: #333 !important;
   }
+
+  .blog-content {
+	padding: 10px;
+  }
+  
+  /* Headings (h1-h6) */
+  .blog-content h1 {
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+  }
+  
+  .blog-content h2 {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 0.75rem;
+  }
+  
+  .blog-content h3 {
+	font-size: 1.75rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+  }
+  
+  .blog-content h4, h5, h6 {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+  }
+  
+  /* Unordered List */
+  .blog-content ul {
+	padding-left: 40px;
+	list-style-type: disc;
+	margin-bottom: 1rem;
+  }
+  
+  /* Ordered List */
+  .blog-content ol {
+	padding-left: 40px;
+	list-style-type: decimal;
+	margin-bottom: 1rem;
+  }
+  
+  /* List Items */
+  .blog-content li {
+	margin-bottom: 0.5rem;
+  }
+  
+  /* Paragraphs */
+  .blog-content p {
+	margin-bottom: 1rem;
+	font-size: 1rem;
+	line-height: 1.6;
+  }
+  
+  /* Images */
+  .blog-content img {
+	width: 100%;
+	border-radius: 8px;
+	margin-top: 1rem;
+  }
+.blog-content em {
+	font-style: italic;
+}  

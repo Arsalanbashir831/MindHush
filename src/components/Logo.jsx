@@ -15,7 +15,7 @@ export default function Logo() {
           <Image 
           w={'200px'}
            h={'100px'}
-            src="/MIND_HUSH_LOGO_FINAL_ WIDE WHITE TEXT.png" 
+            src="/mh_logo_figma.svg" 
             alt="Company Logo" 
           />
           {/* <Text fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>MINDHUSH</Text> */}
