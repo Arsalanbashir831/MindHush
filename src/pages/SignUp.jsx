@@ -94,8 +94,9 @@ const SignUpPage = () => {
 
   return (
     <Container maxW="100vw" h="100vh" p={0} position="relative">
+      
       <Flex h="full" direction={flexDirection} align="center" justify="center">
-        <Box alignSelf="flex-start" w="150px">
+      <Box p={2} alignSelf="flex-start" w="290px">
           <Logo />
         </Box>
         {/* Left side with form */}

@@ -8,17 +8,17 @@ export default function Logo() {
       <Link to="/">
         <HStack
           spacing={2}
-          align="center"
+          align="flex-start"
           flexDirection={{ base: "column", md: "row" }} // Vertical for mobile, horizontal for desktop
           textAlign={{ base: "center", md: "left" }} // Center align text on mobile
         >
           <Image 
-            w={{ base: "80px", md: "80px" }} 
-            h="130px" 
-            src="/gradient_logo.png" 
+          w={'200px'}
+           h={'100px'}
+            src="/MIND_HUSH_LOGO_FINAL_ WIDE WHITE TEXT.png" 
             alt="Company Logo" 
           />
-          <Text fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>MINDHUSH</Text>
+          {/* <Text fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>MINDHUSH</Text> */}
         </HStack>
       </Link>
     </Box>

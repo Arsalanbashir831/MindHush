@@ -41,7 +41,7 @@ const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState)
 		base: "center",
 		md: "flex-start",
 	});
-	const logoWidth = useBreakpointValue({ base: "120px", md: "120px" });
+	const logoWidth = useBreakpointValue({ base: "270px", md: "270px" });
 
 	// Form state
 	const [formData, setFormData] = useState({ email: "", password: "" });

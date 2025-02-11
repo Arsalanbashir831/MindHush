@@ -16,10 +16,10 @@ import Logo from "./Logo";
 
 const FooterSection = () => {
   return (
-    <Box bg="rgba(0, 24, 24, 0.95)" py={{ base: 12, md: 10 }}>
+    <Box  bg="rgba(0, 24, 24, 0.95)" py={{ base: 12, md: 10 }}>
       <Container maxW="7xl">
         <Grid templateColumns={{ base: "1fr", md: "1.25fr 1fr" }} gap={{ base: 8, md: 16 }}>
-          <Box>
+          <Box >
             <Logo />
             <Text color="gray.400" mb={8} maxW="400px">
               Your Path to Peace of Mind Starts Here.
