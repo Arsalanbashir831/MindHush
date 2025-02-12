@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Box, HStack, Image, useBreakpointValue } from "@chakra-ui/react";
 import Lottie from "lottie-react";
 import ReactMarkdown from "react-markdown";
+import { Tooltip } from "antd";
+import remarkGfm from "remark-gfm"; // Enables link parsing properly
 
 const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
     const [animationData, setAnimationData] = useState(null);
@@ -9,7 +11,7 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
     // ✅ Responsive styling
     const maxWidth = useBreakpointValue({ base: "85%", sm: "75%", md: "60%", lg: "50%" });
     const fontSize = useBreakpointValue({ base: "14px", sm: "15px", md: "16px", lg: "17px" });
-    const paddingX = useBreakpointValue({ base: 3, sm: 4 }); // Adjust padding for small screens
+    const paddingX = useBreakpointValue({ base: 3, sm: 4 });
 
     // ✅ Fetch Lottie JSON from `public/` when the component mounts
     useEffect(() => {
@@ -22,13 +24,32 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
     // Ensure the message is a valid string and properly formatted
     const sanitizedMessage = typeof message === "string" ? message.trim() : String(message || "");
 
+    // Custom Markdown component rendering for links
+    const renderers = {
+        a: ({ href, children }) => {
+            console.log("Detected link:", href); // Debugging link detection
+            return (
+                <Tooltip title="Click to open link" color="purple">
+                    <a 
+                        href={href} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        style={{ fontWeight: "bold", color: "pink", textDecoration: "underline" }}
+                    >
+                        {children}
+                    </a>
+                </Tooltip>
+            );
+        }
+    };
+
     return (
         <HStack
             w="full"
             alignItems="flex-start"
             justifyContent={isUser ? "flex-end" : "flex-start"}
-            spacing={4} // Ensures proper spacing between elements
-            ref={messageRef} // ✅ Assigns ref to the last message dynamically
+            spacing={4}
+            ref={messageRef}
         >
             {/* AI Avatar */}
             {!isUser && (
@@ -37,7 +58,6 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
                     width={'40px'}
                     height={'65px'}
                     alt="AI avatar"
-                    //  boxSize="44px"
                     borderRadius="full"
                     ml={0}
                 />
@@ -54,7 +74,7 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
                 position="relative"
                 minH="40px"
                 textAlign="left"
-                fontSize={fontSize} // ✅ Dynamically adjust font size
+                fontSize={fontSize}
             >
                 {isAIResponseLoading && !isUser ? (
                     animationData ? (
@@ -63,7 +83,12 @@ const ChatMessage = ({ message, isUser, isAIResponseLoading, messageRef }) => {
                         "Loading..."
                     )
                 ) : (
-                    <ReactMarkdown>{sanitizedMessage}</ReactMarkdown>
+                    <ReactMarkdown 
+                        components={renderers} 
+                        remarkPlugins={[remarkGfm]} // Enables proper link detection
+                    >
+                        {sanitizedMessage}
+                    </ReactMarkdown>
                 )}
             </Box>
 
