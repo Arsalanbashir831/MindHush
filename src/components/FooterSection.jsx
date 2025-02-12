@@ -94,7 +94,7 @@ const FooterSection = () => {
                 <Heading color="white" fontSize={{ base: "lg", md: "2xl" }} mb={4}>
                   Contact Us
                 </Heading>
-                <Text color="gray.400">hello@mindhush.ai</Text>
+                <Text color="gray.400">contact@mindhush.ai</Text>
                 <HStack spacing={2} mt={2}>
                 <Link href="/terms" color="gray.400" _hover={{ color: "white" }} fontSize={{ base: "sm", md: "md" }}>Terms and Conditions</Link>
                 <Link href="/privacy-policy" color="gray.400" _hover={{ color: "white" }} fontSize={{ base: "sm", md: "md" }}>Privacy Policy</Link>
