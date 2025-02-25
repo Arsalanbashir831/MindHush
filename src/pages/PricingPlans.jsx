@@ -18,16 +18,8 @@ import Logo from "@/components/Logo";
 const PricingPlans = () => {
 	const features = [
 		{
-			text: "Multiple Chats",
-			description: "Access to unlimited chats",
-		},
-		{
 			text: "Unlimited Chat Windows",
 			description: "Rest assured, you will get unlimited chat windows",
-		},
-		{
-			text: "No Cool Down Period",
-			description: "There will be no cool down period",
 		},
 		{
 			text: "24/7 Priority Support",
@@ -41,26 +33,26 @@ const PricingPlans = () => {
 	];
 
 	return (
-		<Box height='100vh' overflowY='auto' bg='gray.900'>
-			<HStack justifyContent='space-between' alignItems='center' px={8} py={2}>
+		<Box height="100vh" overflowY="auto" bg="gray.900">
+			<HStack justifyContent="space-between" alignItems="center" px={8} py={2}>
 				<Logo />
 				<AuthButtons />
 			</HStack>
-			<Container maxW='breakpoint-xl' pt={8}>
+			<Container maxW="breakpoint-xl" pt={8}>
 				<VStack spaceY={8} mb={16}>
 					<VStack>
 						<Heading
 							fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
-							fontWeight='bold'
-							color='white'
-							textAlign='center'
+							fontWeight="bold"
+							color="white"
+							textAlign="center"
 							mb={3}>
 							Pricing Plans
 						</Heading>
 						<Text
 							fontSize={{ base: "sm", md: "md" }}
-							color='gray.400'
-							textAlign='center'
+							color="gray.400"
+							textAlign="center"
 							maxW={450}>
 							Want to get more out of Mind Hush? Subscribe to one of our
 							professional plans.
@@ -69,21 +61,21 @@ const PricingPlans = () => {
 
 					<PricingCards pricingPlans={PRICING_PLANS} />
 
-					<Box width='100%' mt={16}>
+					<Box width="100%" mt={16}>
 						<HStack mb={8}>
 							<Text
-								color='white'
+								color="white"
 								fontSize={{ base: "md", lg: "lg" }}
-								fontWeight='bold'
-								textWrap='nowrap'
+								fontWeight="bold"
+								textWrap="nowrap"
 								mr={6}>
-								WHAT'S INCLUDED
+								PREMIUM PACKAGE
 							</Text>
 							<Separator />
 						</HStack>
 						<SimpleGrid
 							columns={{ base: 1, sm: 2, lg: 3 }}
-							width='100%'
+							width="100%"
 							gap={8}>
 							{features.map((feature, index) => (
 								<PricingFeature key={index} {...feature} />

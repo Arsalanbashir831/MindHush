@@ -19,8 +19,11 @@ import { apiCallerAuthGet } from "./api/ApiCaller";
 import Feedback from "./pages/Feedback";
 import BlogList from "./pages/BlogList";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import PrivacyPolicy from "./pages/PrivacyPolicy";
+// import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-YFLEKGC5XY");
 
 const App = () => {
 	const [profile, setProfile] = useRecoilState(userState);
@@ -53,7 +56,7 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<LandingPage />} />
 					<Route path="/terms" element={<TermsCondition />} />
-					<Route path='/privacy-policy' element={<PrivacyPolicy />} />
+					{/* <Route path='/privacy-policy' element={<PrivacyPolicy />} /> */}
 					<Route path="/emergency" element={<Emergency />} />
 					<Route path="/forget-password" element={<ForgetPassword />} />
 					<Route path="/otp-verification" element={<OtpVerification />} />
