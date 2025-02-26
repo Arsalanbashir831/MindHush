@@ -25,7 +25,7 @@ const PriceCard = ({
 
   const handleSubscribe = async () => {
     if (!isAuthenticated) {
-      navigation("/login");
+      navigation(`/login?function=handleSubscribeMonthly`);
     } else {
       try {
         const response = await apiCallerAuthPost(
@@ -45,7 +45,7 @@ const PriceCard = ({
   };
 const handleSubscribeAnnually= async ()=>{
     if (!isAuthenticated) {
-        navigation("/login");
+        navigation("/login?function=handleSubscribeAnnually");
       } else {
         try {
           const response = await apiCallerAuthPost(
