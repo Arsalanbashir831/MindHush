@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -52,6 +52,17 @@ const SignInPage = () => {
   const params = new URLSearchParams(window.location.search);
   const functionName = params.get("function");
   const navigation = useNavigate();
+  useEffect(()=>{
+    if(isAuthenticated){
+      if (functionName === "handleSubscribeMonthly") {
+        handleSubscribe(localStorage.getItem("authToken"));
+      } else if (functionName === "handleSubscribeAnnually") {
+        handleSubscribeAnnually(localStorage.getItem("authToken"));
+      } else {
+        navigate("/c/new");
+      }
+    }
+  },[isAuthenticated])
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,13 +122,14 @@ const SignInPage = () => {
         localStorage.setItem("authToken", response.data.access);
         localStorage.setItem("refreshToken", response.data.refresh);
         setIsAuthenticated(true);
-        if (functionName === "handleSubscribeMonthly") {
-          handleSubscribe(response.data.access);
-        } else if (functionName === "handleSubscribeAnnually") {
-          handleSubscribeAnnually(response.data.access);
-        } else {
-          navigate("/c/new");
-        }
+       window.location.reload()
+        // if (functionName === "handleSubscribeMonthly") {
+        //   handleSubscribe(response.data.access);
+        // } else if (functionName === "handleSubscribeAnnually") {
+        //   handleSubscribeAnnually(response.data.access);
+        // } else {
+        //   navigate("/c/new");
+        // }
 
         // const responseProfile = await apiCallerAuthGet("/api/users/profile/", response.data.access);
 
@@ -152,13 +164,14 @@ const SignInPage = () => {
           localStorage.setItem("authToken", res.data.access);
           localStorage.setItem("refreshToken", res.data.refresh);
           setIsAuthenticated(true);
-          if (functionName === "handleSubscribeMonthly") {
-            handleSubscribe(res.data.access);
-          } else if (functionName === "handleSubscribeAnnually") {
-            handleSubscribeAnnually(res.data.access);
-          } else {
-            navigate("/c/new");
-          }
+         window.location.reload()
+          // if (functionName === "handleSubscribeMonthly") {
+          //   handleSubscribe(res.data.access);
+          // } else if (functionName === "handleSubscribeAnnually") {
+          //   handleSubscribeAnnually(res.data.access);
+          // } else {
+          //   navigate("/c/new");
+          // }
         } else {
           console.error("Backend Error:", res.data.error);
           throw new Error(res.data.error || "Google Login failed");
