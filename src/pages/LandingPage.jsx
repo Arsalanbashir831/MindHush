@@ -280,7 +280,7 @@ const LandingPage = () => {
 								</Text>
 							</Text>
 						</VStack>
-						<PricingCards pricingPlans={PRICING_PLANS} />
+						<PricingCards isLanding={true} pricingPlans={PRICING_PLANS} />
 					</Box>
 				</Box>
 

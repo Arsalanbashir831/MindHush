@@ -6,6 +6,8 @@ import { useNavigate } from "react-router";
 import { useRecoilValue } from "recoil";
 import { authState, userState } from "@/atom/state";
 import { Switch } from "antd";
+import { BiCircle } from "react-icons/bi";
+import { BsCircleFill } from "react-icons/bs";
 
 const PriceCard = ({
   title,
@@ -17,6 +19,7 @@ const PriceCard = ({
   isSelected,
   isAnnual,
   subscriptionType,
+  isLanding,
 }) => {
   const token = localStorage.getItem("authToken");
   const isAuthenticated = useRecoilValue(authState);
@@ -165,6 +168,19 @@ console.log('testing',subscriptionType==='monthly');
         <Text fontSize={{ base: "sm", md: "md" }} color="gray.400">
            {price === "0.00" ? "Free" :isAnnual?' Per Year':' Per Month'}
         </Text>
+        {isLanding && (<>
+          <ul className="list-disc list-outside pl-5 text-sm text-gray-400">
+  {isPopular && (
+    <>
+      <li>Unlimited Chats</li>
+      <li>Priority Support</li>
+      <li>Access to all features</li>
+    </>
+  )}
+</ul>
+
+        </>)}
+
        {isPopular &&(<>
      
             <Button
@@ -191,32 +207,7 @@ console.log('testing',subscriptionType==='monthly');
               {profile?.is_premium && profile.subscription_type===subscriptionType ?'Downgrade Subscription':'Subscribe'}
             </Button>
           </>)}
-        {/* {isPopular &&!isAnnual && (
-          <>
-            <Button
-              bg={
-                isSelected
-                  ? "#4A4A4A"
-                  : isPopular
-                  ? "#61395BD1"
-                  : "secondary.30"
-              }
-              color="white"
-              size="lg"
-              rounded="full"
-              my={2}
-              onClick={
-                profile?.is_premium ? handleCancelSubscription : handleSubscribe
-              }
-              isDisabled={isSelected}
-              _hover={
-                !isSelected && { bg: isPopular ? "#7A50764D" : "secondary.50" }
-              }
-            >
-              {profile?.is_premium ? "Downgrade Subscription" : "Subscribe"}
-            </Button>
-          </>
-        )} */}
+        
 
         <Text fontSize={{ base: "xs", md: "sm" }} color="gray.400">
           {description}
@@ -226,7 +217,7 @@ console.log('testing',subscriptionType==='monthly');
   );
 };
 
-export default function PricingCards({ pricingPlans }) {
+export default function PricingCards({ pricingPlans ,isLanding=false }) {
   const [isAnnual, setIsAnnual] = useState(false);
   const profile = useRecoilValue(authState);
   const isPremium = profile?.is_premium;
@@ -257,6 +248,7 @@ export default function PricingCards({ pricingPlans }) {
             isSelected={
               isPremium ? plan.title === "preemium" : plan.title === "Free Plan"
             }
+            isLanding={isLanding}
           />
         ))}
       </Flex>

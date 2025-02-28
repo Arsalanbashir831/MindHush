@@ -13,7 +13,12 @@ export const PRICING_PLANS = [
 		originalPrice: "",
 		description: "Enjoy access to pro member features and unlimited chats",
 		isPopular: true,
-		type:'monthly'
+		type:'monthly',
+		bullet_points:[
+			"Unlimited Chats",
+			"Priority Support",
+			"Access to all features"
+		]
 	},
 	{
 		title: "Premium",
@@ -21,7 +26,12 @@ export const PRICING_PLANS = [
 		originalPrice: "",
 		description: "Enjoy access to pro member features and unlimited chats",
 		isPopular: true,
-		type:'yearly'
+		type:'yearly',
+		bullet_points:[
+			"Unlimited Chats",
+			"Priority Support",
+			"Access to all features"
+		]
 	},
 ];
 
