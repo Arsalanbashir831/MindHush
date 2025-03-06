@@ -24,11 +24,15 @@ import ChattingArea from "@/components/ChattingArea";
 import { apiCallerAuthGet } from "@/api/ApiCaller";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate, useParams } from "react-router";
+import RenewSubscriptionModal from "@/components/RenewSubscriptionModal";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/atom/state";
 
 const Dashboard = ({ isNewChart = false }) => {
 	const { token, isAuthenticated } = useAuth();
+	const profile = useRecoilValue(userState);
 	const navigate = useNavigate();
-	const { id } = useParams(); // ✅ Extract chatId from URL
+	const { id } = useParams();
 	const isDrawer = useBreakpointValue({ base: true, md: false });
 
 	const [activeChat, setActiveChat] = useState(null);
@@ -36,6 +40,7 @@ const Dashboard = ({ isNewChart = false }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [refresh, setRefresh] = useState(false);
+
 	useEffect(() => {
 		const fetchChats = async () => {
 			if (!token) {
@@ -52,13 +57,12 @@ const Dashboard = ({ isNewChart = false }) => {
 
 				if (response?.status === 200) {
 					setChats(response.data);
-
-					// ✅ Set active chat based on URL params or fallback to the first chat
+					// Set active chat based on URL params or fallback to the first chat
 					if (id && response.data.some((chat) => chat.id === parseInt(id))) {
-						setActiveChat(parseInt(id)); // ✅ Set active chat from URL
+						setActiveChat(parseInt(id));
 					} else if (response.data.length > 0) {
-						setActiveChat(response.data[0].id); // ✅ Fallback to first chat
-						navigate(`/c/${response.data[0].id}`); // ✅ Update URL if no valid chatId
+						setActiveChat(response.data[0].id);
+						navigate(`/c/${response.data[0].id}`);
 					}
 				} else {
 					throw new Error(response?.data?.messages || "Failed to fetch chats.");
@@ -74,11 +78,9 @@ const Dashboard = ({ isNewChart = false }) => {
 		if (isAuthenticated && token) {
 			fetchChats();
 		}
-	}, [token, isAuthenticated, refresh]);
+	}, [token, isAuthenticated, refresh, id, navigate]);
 
 	const categorizeChats = (chats) => {
-		console.log("Raw Chats:", chats);
-
 		const today = new Date();
 		const yesterday = new Date(today);
 		yesterday.setDate(today.getDate() - 1);
@@ -116,14 +118,21 @@ const Dashboard = ({ isNewChart = false }) => {
 			}
 		});
 
-		console.log("Categorized Chats:", categories);
 		return categories;
 	};
 
 	const categorizedChats = categorizeChats(chats);
 
+	// Check if subscription has expired
+	const subscriptionExpired =
+		profile &&
+		profile.subscription_end_date &&
+		new Date(profile.subscription_end_date) < new Date();
+
 	return (
-		<Box minH="100vh" color="white" >
+		<Box minH="100vh" color="white">
+			{/* Auto-open the Renew Subscription Modal if subscription has expired */}
+			{subscriptionExpired && <RenewSubscriptionModal autoOpen={true} />}
 			<HStack w="full" spacing={0}>
 				{!isDrawer && (
 					<Sidebar
@@ -135,7 +144,7 @@ const Dashboard = ({ isNewChart = false }) => {
 					/>
 				)}
 
-				<VStack 
+				<VStack
 					w="full"
 					maxH="100vh"
 					gap={0}
@@ -143,10 +152,8 @@ const Dashboard = ({ isNewChart = false }) => {
 					p={0}
 					pt={{ base: 2, md: 0 }}
 					boxSizing="border-box"
-					overflow={'hidden'}
-				
-					>
-					<Flex 
+					overflow="hidden">
+					<Flex
 						justifyContent={{ base: "space-between", md: "flex-end" }}
 						w="full"
 						px={{ base: 4, md: 0 }}>
