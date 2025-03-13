@@ -43,42 +43,46 @@ const Dashboard = ({ isNewChart = false }) => {
 
 	useEffect(() => {
 		const fetchChats = async () => {
-			if (!token) {
-				setIsLoading(false);
-				return;
+		  if (!token) {
+			setIsLoading(false);
+			return;
+		  }
+	  
+		  setIsLoading(true);
+		  setError(null);
+	  
+		  try {
+			
+			console.log("Fetching chats with token:", token);
+			const response = await apiCallerAuthGet("/api/chats/user/", token);
+		
+			if (response?.status === 200) {
+			  setChats(response.data);
+			  if (!id) {
+				// Optionally set activeChat to a special value or leave it as is
+				setActiveChat("new");
+			  } else if (id && response.data.some((chat) => chat.id === parseInt(id))) {
+				setActiveChat(parseInt(id));
+			  } else if (response.data.length > 0) {
+				setActiveChat(response.data[0].id);
+				navigate(`/c/${response.data[0].id}`);
+			  }
+			} else {
+			  throw new Error(response?.data?.messages || "Failed to fetch chats.");
 			}
-
-			setIsLoading(true);
-			setError(null);
-
-			try {
-				console.log("Fetching chats with token:", token);
-				const response = await apiCallerAuthGet("/api/chats/user/", token);
-
-				if (response?.status === 200) {
-					setChats(response.data);
-					// Set active chat based on URL params or fallback to the first chat
-					if (id && response.data.some((chat) => chat.id === parseInt(id))) {
-						setActiveChat(parseInt(id));
-					} else if (response.data.length > 0) {
-						setActiveChat(response.data[0].id);
-						navigate(`/c/${response.data[0].id}`);
-					}
-				} else {
-					throw new Error(response?.data?.messages || "Failed to fetch chats.");
-				}
-			} catch (err) {
-				console.error("Error fetching chats:", err);
-				setError(err.message || "An error occurred while fetching chats.");
-			} finally {
-				setIsLoading(false);
-			}
+		  } catch (err) {
+			console.error("Error fetching chats:", err);
+			setError(err.message || "An error occurred while fetching chats.");
+		  } finally {
+			setIsLoading(false);
+		  }
 		};
-
+	  
 		if (isAuthenticated && token) {
-			fetchChats();
+		  fetchChats();
 		}
-	}, [token, isAuthenticated, refresh, id, navigate]);
+	  }, [token, isAuthenticated, refresh, id, navigate]);
+	  
 
 	const categorizeChats = (chats) => {
 		const today = new Date();
