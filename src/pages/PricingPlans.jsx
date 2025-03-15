@@ -34,7 +34,14 @@ const PricingPlans = () => {
 
 	return (
 		<Box height="100vh" overflowY="auto" bg="gray.900">
-			<HStack justifyContent="space-between" alignItems="center" px={8} py={2}>
+			<HStack
+				justifyContent="space-between"
+				alignItems="center"
+				px={{
+					base: 2,
+					md: 8,
+				}}
+				py={2}>
 				<Logo />
 				<AuthButtons />
 			</HStack>

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import {
-    VStack,
-    Flex,
-    Box,
-    Spinner,
-    Center,
-    Text,
-    useBreakpointValue,
+	VStack,
+	Flex,
+	Box,
+	Spinner,
+	Center,
+	Text,
+	useBreakpointValue,
 } from "@chakra-ui/react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import ChatMessage from "./ChatMessage";
@@ -17,219 +17,225 @@ import { useRecoilState } from "recoil";
 import { refreshState } from "@/atom/state";
 
 const ChattingArea = () => {
-    const { id } = useParams();
-    const { state } = useLocation();
-    const navigate = useNavigate();
-    const { token } = useAuth();
-    const [messages, setMessages] = useState([]);
-    const [chatId, setChatId] = useState(null);
-    const [isCreatingChat, setIsCreatingChat] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isAIResponseLoading, setIsAIResponseLoading] = useState(false);
-    const lastMessageRef = useRef(null);
-    const [refresh, setRefresh] = useRecoilState(refreshState);
+	const { id } = useParams();
+	const { state } = useLocation();
+	const navigate = useNavigate();
+	const { token } = useAuth();
+	const [messages, setMessages] = useState([]);
+	const [chatId, setChatId] = useState(null);
+	const [isCreatingChat, setIsCreatingChat] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isAIResponseLoading, setIsAIResponseLoading] = useState(false);
+	const lastMessageRef = useRef(null);
+	const [refresh, setRefresh] = useRecoilState(refreshState);
 
-    // Adjust chat height dynamically for mobile browsers
-    const [chatHeight, setChatHeight] = useState("calc(100dvh - 130px)");
+	// Adjust chat height dynamically for mobile browsers
+	// const [chatHeight, setChatHeight] = useState("calc(100dvh - 130px)");
 
-    useEffect(() => {
-        const updateHeight = () => {
-            setChatHeight(`${window.innerHeight - 130}px`);
-        };
+	// useEffect(() => {
+	//     const updateHeight = () => {
+	//         setChatHeight(`${window.innerHeight - 130}px`);
+	//     };
 
-        updateHeight(); // Set on mount
-        window.addEventListener("resize", updateHeight);
+	//     updateHeight(); // Set on mount
+	//     window.addEventListener("resize", updateHeight);
 
-        return () => window.removeEventListener("resize", updateHeight);
-    }, []);
+	//     return () => window.removeEventListener("resize", updateHeight);
+	// }, []);
 
-    // Auto-scroll to last message
-    const scrollToBottom = () => {
-        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
+	// Auto-scroll to last message
+	const scrollToBottom = () => {
+		lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+	};
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
-    // Fetch chat messages
-    const fetchMessages = async (chatId) => {
-        setIsLoading(true);
-        try {
-            const response = await apiCallerAuthGet(`/api/chats/${chatId}/messages/`, token);
-            if (response.status === 200) {
-                const formattedMessages = response.data.map((msg) => ({
-                    message: msg.content,
-                    isUser: !msg.is_system_message,
-                }));
-                setMessages(formattedMessages);
-            } else {
-                throw new Error("Failed to fetch messages");
-            }
-        } catch (error) {
-            console.error("Error fetching messages:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+	// Fetch chat messages
+	const fetchMessages = async (chatId) => {
+		setIsLoading(true);
+		try {
+			const response = await apiCallerAuthGet(
+				`/api/chats/${chatId}/messages/`,
+				token
+			);
+			if (response.status === 200) {
+				const formattedMessages = response.data.map((msg) => ({
+					message: msg.content,
+					isUser: !msg.is_system_message,
+				}));
+				setMessages(formattedMessages);
+			} else {
+				throw new Error("Failed to fetch messages");
+			}
+		} catch (error) {
+			console.error("Error fetching messages:", error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-    useEffect(() => {
-        if (id) {
-            setChatId(id);
-            fetchMessages(id);
-        } else if (state && !chatId && !isCreatingChat) {
-            const createChat = async () => {
-                setIsCreatingChat(true);
-                try {
-                    const createChatResponse = await apiCallerAuthPost(
-                        "/api/chats/create/",
-                        { name: state.substring(0, 50) },
-                        token
-                    );
+	useEffect(() => {
+		if (id) {
+			setChatId(id);
+			fetchMessages(id);
+		} else if (state && !chatId && !isCreatingChat) {
+			const createChat = async () => {
+				setIsCreatingChat(true);
+				try {
+					const createChatResponse = await apiCallerAuthPost(
+						"/api/chats/create/",
+						{ name: state.substring(0, 50) },
+						token
+					);
 
-                    if (createChatResponse.status === 201) {
-                        const newChatId = createChatResponse.data.id;
-                        setChatId(newChatId);
+					if (createChatResponse.status === 201) {
+						const newChatId = createChatResponse.data.id;
+						setChatId(newChatId);
 
-                        const addMessageResponse = await apiCallerAuthPost(
-                            `/api/chats/${newChatId}/messages/add/`,
-                            { content: state },
-                            token
-                        );
+						const addMessageResponse = await apiCallerAuthPost(
+							`/api/chats/${newChatId}/messages/add/`,
+							{ content: state },
+							token
+						);
 
-                        setMessages([
-                            { message: addMessageResponse.data.content, isUser: true },
-                            { message: addMessageResponse.data.ai_response, isUser: false },
-                        ]);
+						setMessages([
+							{ message: addMessageResponse.data.content, isUser: true },
+							{ message: addMessageResponse.data.ai_response, isUser: false },
+						]);
 
-                        navigate(`/c/${newChatId}`);
-                    } else {
-                        throw new Error("Failed to create chat");
-                    }
-                } catch (error) {
-                    console.error("Error creating chat:", error);
-                } finally {
-                    setIsCreatingChat(false);
-                }
-            };
+						navigate(`/c/${newChatId}`);
+					} else {
+						throw new Error("Failed to create chat");
+					}
+				} catch (error) {
+					console.error("Error creating chat:", error);
+				} finally {
+					setIsCreatingChat(false);
+				}
+			};
 
-            createChat();
-        }
-    }, [id, state, chatId, token, navigate, isCreatingChat]);
+			createChat();
+		}
+	}, [id, state, chatId, token, navigate, isCreatingChat]);
 
-    const onSubmitClick = async (newMessage) => {
-        if (!chatId) {
-            alert("Chat is not properly initialized. Please try again.");
-            return;
-        }
+	const onSubmitClick = async (newMessage) => {
+		if (!chatId) {
+			alert("Chat is not properly initialized. Please try again.");
+			return;
+		}
 
-        setMessages((prev) => [...prev, { message: newMessage, isUser: true }]);
+		setMessages((prev) => [...prev, { message: newMessage, isUser: true }]);
 
-        const dummyId = `dummy-${Date.now()}`;
-        setMessages((prev) => [
-            ...prev,
-            { id: dummyId, message: "", isUser: false, isAIResponseLoading: true },
-        ]);
-        setIsAIResponseLoading(true);
+		const dummyId = `dummy-${Date.now()}`;
+		setMessages((prev) => [
+			...prev,
+			{ id: dummyId, message: "", isUser: false, isAIResponseLoading: true },
+		]);
+		setIsAIResponseLoading(true);
 
-        try {
-            const addMessageResponse = await apiCallerAuthPost(
-                `/api/chats/${chatId}/messages/add/`,
-                { content: newMessage },
-                token
-            );
+		try {
+			const addMessageResponse = await apiCallerAuthPost(
+				`/api/chats/${chatId}/messages/add/`,
+				{ content: newMessage },
+				token
+			);
 
-            if (addMessageResponse.status === 201) {
-                setRefresh(!refresh);
-                setMessages((prev) =>
-                    prev.map((msg) =>
-                        msg.id === dummyId
-                            ? { message: addMessageResponse.data.ai_response, isUser: false }
-                            : msg
-                    )
-                );
-                setIsAIResponseLoading(false);
-            } else {
-                setMessages((prev) =>
-                    prev.map((msg) =>
-                        msg.id === dummyId
-                            ? {
-                                  message:
-                                      "You have exceeded your daily credits. Try again tomorrow.",
-                                  isUser: false,
-                              }
-                            : msg
-                    )
-                );
-                setIsAIResponseLoading(false);
-            }
-        } catch (error) {
-            console.error("Error adding message to chat:", error);
-            setMessages((prev) =>
-                prev.map((msg) =>
-                    msg.id === dummyId
-                        ? { message: "Something went wrong. Please try again.", isUser: false }
-                        : msg
-                )
-            );
-            setIsAIResponseLoading(false);
-        }
-    };
+			if (addMessageResponse.status === 201) {
+				setRefresh(!refresh);
+				setMessages((prev) =>
+					prev.map((msg) =>
+						msg.id === dummyId
+							? { message: addMessageResponse.data.ai_response, isUser: false }
+							: msg
+					)
+				);
+				setIsAIResponseLoading(false);
+			} else {
+				setMessages((prev) =>
+					prev.map((msg) =>
+						msg.id === dummyId
+							? {
+									message:
+										"You have exceeded your daily credits. Try again tomorrow.",
+									isUser: false,
+							  }
+							: msg
+					)
+				);
+				setIsAIResponseLoading(false);
+			}
+		} catch (error) {
+			console.error("Error adding message to chat:", error);
+			setMessages((prev) =>
+				prev.map((msg) =>
+					msg.id === dummyId
+						? {
+								message: "Something went wrong. Please try again.",
+								isUser: false,
+						  }
+						: msg
+				)
+			);
+			setIsAIResponseLoading(false);
+		}
+	};
 
-    return (
-        <Flex
-            flexDirection="column"
-            height="100dvh"
-            w="full"
-            color="white"
-            px={{ base: 2, md: 4 }}
-            justifyContent="flex-end"
-        >
-            {isLoading ? (
-                <Center h="100%">
-                    <Spinner size="xl" color="teal.500" />
-                </Center>
-            ) : (
-                <>
-                    {/* Chat Messages - Scrollable */}
-                    <VStack
-                        spacing={3}
-                        overflowY="auto"
-                        w="full"
-                        maxH={chatHeight}
-                        pr={{ base: 1, md: 2 }}
-                        pb={4}
-                    >
-                        {messages.map((msg, index) => (
-                            <ChatMessage
-                                key={index}
-                                message={msg.message}
-                                isUser={msg.isUser}
-                                isAIResponseLoading={msg.isAIResponseLoading || false}
-                                messageRef={index === messages.length - 1 ? lastMessageRef : null}
-                            />
-                        ))}
-                    </VStack>
+	return (
+		<Flex
+			flexDirection="column"
+			height="93dvh"
+			w="full"
+			color="white"
+			px={{ base: 2, md: 4 }}
+			justifyContent="flex-end">
+			{isLoading ? (
+				<Center h="100%">
+					<Spinner size="xl" color="teal.500" />
+				</Center>
+			) : (
+				<>
+					{/* Chat Messages - Scrollable */}
+					<VStack
+						spacing={3}
+						overflowY="auto"
+						w="full"
+						// maxH={chatHeight}
+						pr={{ base: 1, md: 2 }}
+						pb={4}>
+						{messages.map((msg, index) => (
+							<ChatMessage
+								key={index}
+								message={msg.message}
+								isUser={msg.isUser}
+								isAIResponseLoading={msg.isAIResponseLoading || false}
+								messageRef={
+									index === messages.length - 1 ? lastMessageRef : null
+								}
+							/>
+						))}
+					</VStack>
 
-                    {/* Input Area - Always Fixed at Bottom */}
-                    <Box w="full" position="sticky" bottom="0" pt={2} pb={2} zIndex={10}>
-                        <InputArea onSubmitClick={onSubmitClick} />
-                    </Box>
-                </>
-            )}
+					{/* Input Area - Always Fixed at Bottom */}
+					<Box w="full" position="sticky" bottom="0" pt={2} pb={2} zIndex={10}>
+						<InputArea onSubmitClick={onSubmitClick} />
+					</Box>
+				</>
+			)}
 
-            {/* Disclaimer Message */}
-            <Text
-                color="gray.400"
-                fontStyle="italic"
-                textAlign="center"
-                fontSize={{ base: "xs", md: "sm" }}
-                mt={2}
-            >
-                MindHush.ai is not a licensed professional. For urgent or serious concerns, please seek assistance from a qualified expert.
-            </Text>
-        </Flex>
-    );
+			{/* Disclaimer Message */}
+			<Text
+				color="gray.400"
+				fontStyle="italic"
+				textAlign="center"
+				fontSize={{ base: "xs", md: "sm" }}
+				mt={2}>
+				MindHush.ai is not a licensed professional. For urgent or serious
+				concerns, please seek assistance from a qualified expert.
+			</Text>
+		</Flex>
+	);
 };
 
 export default ChattingArea;
