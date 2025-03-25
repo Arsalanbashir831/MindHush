@@ -21,7 +21,9 @@ import BlogList from "./pages/BlogList";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import PrivacyPolicy from "./pages/PrivacyPolicy";
 // import PrivacyPolicy from "./pages/PrivacyPolicy";
+
 import ReactGA from "react-ga4";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 ReactGA.initialize("G-YFLEKGC5XY");
 
