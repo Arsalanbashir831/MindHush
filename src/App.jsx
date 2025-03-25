@@ -56,7 +56,7 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<LandingPage />} />
 					<Route path="/terms" element={<TermsCondition />} />
-					{/* <Route path='/privacy-policy' element={<PrivacyPolicy />} /> */}
+					<Route path='/privacy-policy' element={<PrivacyPolicy />} />
 					<Route path="/emergency" element={<Emergency />} />
 					<Route path="/forget-password" element={<ForgetPassword />} />
 					<Route path="/otp-verification" element={<OtpVerification />} />
